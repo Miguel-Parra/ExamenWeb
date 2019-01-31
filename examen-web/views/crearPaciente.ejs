@@ -1,0 +1,55 @@
+<% const estaCreando = typeof noticia === "undefined"%>
+
+<h1> <%= estaCreando ? 'Registrar':'Actualizar' %> Cliente</h1>
+
+<p><%= estaCreando ? 'Registre':'Actualice' %> un Cliente</p>
+
+<form action=""
+      method="POST">
+    <div>
+        <label for="nombres">Nombres:</label>
+        <input id="nombres"
+               type="text"
+               name="nombres"
+               value="">
+    </div>
+    <br>
+    <div>
+        <label for="apellidos">Apellidos:</label>
+        <input id="apellidos"
+               type="text"
+               name="apellidos"
+               value="">
+    </div>
+    <br>
+    <div>
+        <label for="fechaNacimiento">Fecha de Nacimiento:</label>
+        <input id="fechaNacimiento"
+               type="text"
+               name="fechaNacimiento"
+               value="">
+    </div>
+    <br>
+    <div>
+        <label for="hijos">Hijos:</label>
+        <input id="hijos"
+               type="text"
+               name="hijos"
+               value="">
+    </div>
+    <br>
+    <div>
+        <label for="tieneSeguro">Tiene Seguro:</label>
+        <input id="tieneSeguro"
+               type="text"
+               name="tieneSeguro"
+               value="">
+    </div>
+    <br>
+    <button><%= estaCreando ? 'Crear' : 'Actualizar' %> paciente</button>
+
+</form>
+
+<a href="">
+    <button>Regresar</button>
+</a>
