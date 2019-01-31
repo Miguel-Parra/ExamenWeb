@@ -21,7 +21,7 @@ import {EventoPorMedicamentoModule} from "./eventoPorMedicamento/eventoPorMedica
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: 'localhost',
-      port: 32771,
+      port: 32769,
       username: 'miguel',
       password: '182025',
       database: 'examenWeb',
