@@ -4,7 +4,7 @@ import {UsuarioEntity} from "../usuario/usuario.entity";
 
 @Entity('rolesPorUsuario')
 
-export class RolPorUsuario {
+export class RolPorUsuarioEntity {
 
     @PrimaryGeneratedColumn()
     id: number;

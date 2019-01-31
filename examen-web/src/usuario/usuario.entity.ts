@@ -1,5 +1,5 @@
 import {Column, Entity, OneToMany, PrimaryGeneratedColumn} from "typeorm";
-import {RolPorUsuario} from "../rolPorUsuario/rolPorUsuario";
+import {RolPorUsuarioEntity} from "../rolPorUsuario/rolPorUsuario.entity";
 import {PacienteEntity} from "../paciente/paciente.entity";
 
 @Entity('usuario')
@@ -37,10 +37,10 @@ export class UsuarioEntity {
     fechaNacimiento: string
 
 @OneToMany(
-    type => RolPorUsuario,
+    type => RolPorUsuarioEntity,
     rolPorUsuario => rolPorUsuario.usuario
 )
-    rolesPorUsuario:  RolPorUsuario[];
+    rolesPorUsuario:  RolPorUsuarioEntity[];
 
     @OneToMany(
         type => PacienteEntity,
