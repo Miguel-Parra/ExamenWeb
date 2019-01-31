@@ -2,12 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="62d20a19-9aae-4213-a82c-3f61d393fa32" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/examen-web/views/login.ejs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/examen-web/views/registro.ejs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/examen-web/src/app.controller.ts" beforeDir="false" afterPath="$PROJECT_DIR$/examen-web/src/app.controller.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/examen-web/src/app.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/examen-web/src/app.module.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/examen-web/src/usuario/usuario.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/examen-web/src/usuario/usuario.service.ts" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -99,8 +94,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/examen-web/src/app.controller.ts">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="478">
-              <caret line="31" lean-forward="true" selection-start-line="31" selection-end-line="31" />
+            <state relative-caret-position="325">
+              <caret line="28" column="11" selection-start-line="28" selection-start-column="11" selection-end-line="28" selection-end-column="11" />
               <folding>
                 <element signature="e#0#73#0" expanded="true" />
               </folding>
@@ -276,12 +271,12 @@
       <workItem from="1548881093490" duration="2561000" />
       <workItem from="1548884139641" duration="3554000" />
       <workItem from="1548889887448" duration="11723000" />
-      <workItem from="1548951569184" duration="8311000" />
+      <workItem from="1548951569184" duration="8617000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="27767000" />
+    <option name="totallyTimeSpent" value="28073000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="678" y="0" width="864" height="830" extended-state="0" />
@@ -620,8 +615,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/examen-web/src/app.controller.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="478">
-          <caret line="31" lean-forward="true" selection-start-line="31" selection-end-line="31" />
+        <state relative-caret-position="325">
+          <caret line="28" column="11" selection-start-line="28" selection-start-column="11" selection-end-line="28" selection-end-column="11" />
           <folding>
             <element signature="e#0#73#0" expanded="true" />
           </folding>

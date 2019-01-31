@@ -23,7 +23,10 @@ export class AppController {
         @Session() sesion, ){
 
       const respuesta = await this._usuarioService.autenticar(username, password)
-      if (respuesta)
+      if (respuesta){
+          sesion.usuario= username;
+          res.send('ok')
+      }else
 
 
 
