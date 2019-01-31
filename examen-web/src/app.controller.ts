@@ -1,12 +1,36 @@
-import { Get, Controller } from '@nestjs/common';
+import {Get, Controller, Res, Post, Body, Session} from '@nestjs/common';
 import { AppService } from './app.service';
+import {UsuarioService} from "./usuario/usuario.service";
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(private readonly _appService: AppService,
+              private readonly _usuarioService: UsuarioService) {}
 
-  @Get()
-  root(): string {
-    return this.appService.root();
+  @Get('login')
+ mostrarLogin(
+     @Res() res
+  ){
+    res.render('login')
   }
+
+
+  @Post('login')
+    metodoLogin(
+        @Body('username') username:string,
+        @Body('password') password: string,
+        @Res () res,
+        @Session() sesion, ){
+
+      const respuesta = await this._usuarioService.autenticar(username, password)
+      if (respuesta)
+
+
+
+  }
+
+
+
+
+  ){}
 }

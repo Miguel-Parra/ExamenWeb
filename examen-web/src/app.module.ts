@@ -27,7 +27,7 @@ import {EventoPorMedicamentoModule} from "./eventoPorMedicamento/eventoPorMedica
       database: 'examenWeb',
       // BDD Ya existe -> synchronized: false
       synchronize: true,
-      dropSchema: true, //borra la base y se vuelve a crear, buena idea para pruebas pero no para produccion
+      dropSchema: false, //borra la base y se vuelve a crear, buena idea para pruebas pero no para produccion
       entities: [
         RolEntity, UsuarioEntity, MedicamentoEntity, PacienteEntity, RolPorUsuarioEntity, EventoEntity, EventoPorMedicamentoEntity
       ],
