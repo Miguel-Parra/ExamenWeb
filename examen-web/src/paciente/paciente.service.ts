@@ -33,16 +33,15 @@ export class PacienteService {
     }
 
     borrar(id: number): Promise<PacienteEntity> {
-        const pacienteEntityAEliminar = this._pacienteRepository.create({
+        const pacienteEntityEliminar = this._pacienteRepository.create({
             id: id
         });
-        return this._pacienteRepository.remove(pacienteEntityAEliminar)
+        return this._pacienteRepository.remove(pacienteEntityEliminar)
     }
 
     buscarPorId(id: number): Promise<PacienteEntity> {
         return this._pacienteRepository.findOne(id)
     }
-
 }
 
 export interface Paciente{
@@ -51,5 +50,5 @@ export interface Paciente{
     apellidos:string;
     fechaNacimiento:string;
     hijos: number;
-    tieneSeguro: boolean;
+    tieneSeguro: string;
 }

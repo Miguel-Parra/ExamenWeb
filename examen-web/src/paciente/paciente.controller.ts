@@ -1,7 +1,7 @@
 import {Body, Controller, Get, Param, Post, Query, Res} from "@nestjs/common";
 import {Paciente, PacienteService} from "./paciente.service";
 import {PacienteEntity} from "./paciente.entity";
-import {Like} from "typeorm";
+import {FindManyOptions, Like} from "typeorm";
 
 @Controller('paciente')
 
@@ -13,30 +13,30 @@ export class PacienteController {
     async paciente(
         @Res() response,
         @Query('accion') accion: string,
-        @Query('nombre') nombre: string,
+        @Query('nombres') nombres: string,
         @Query('busqueda') busqueda: string,
     ) {
         let mensaje; // undefined
-        let clase; // undefined
 
-        if (accion && nombre) {
+        if (accion && nombres) {
             switch (accion) {
                 case 'actualizar':
-                    mensaje = `Registro ${nombre} actualizado`;
+                    mensaje = `Registro ${nombres} actualizado`;
                     break;
                 case 'borrar':
-                    mensaje = `Registro ${nombre} eliminado`;
+                    mensaje = `Registro ${nombres} eliminado`;
                     break;
                 case 'crear':
-                    mensaje = `Registro ${nombre} creado`;
+                    mensaje = `Registro ${nombres} creado`;
                     break;
-
             }
         }
 
-        let usuarios: PacienteEntity[];
+        let pacientes: PacienteEntity[];
+
         if (busqueda) {
-            const consulta = {
+
+            const consulta:FindManyOptions<PacienteEntity> = {
                 where: [
                     {
                         nombres: Like(`%${busqueda}%`)
@@ -57,15 +57,17 @@ export class PacienteController {
                 ]
             };
 
-            usuarios = await this._pacienteService.buscar(consulta);
+            pacientes = await this._pacienteService.buscar(consulta);
         }
         else {
-            usuarios = await this._pacienteService.buscar();
+            pacientes = await this._pacienteService.buscar();
         }
-        response.render('crear-Paciente', {
-            arregloUsuario: usuarios,
-            mensajeUsuario: mensaje,
-        })
+
+        response.render('lista-pacientes',
+            {
+                arregloPaciente: pacientes,
+                mensaje: mensaje,
+            })
     }
 
 //se inicializa la pantalla de crear usuario
@@ -74,22 +76,21 @@ export class PacienteController {
         @Res() response
     ) {
         response.render(
-            'paciente/crear-paciente'
+            'crear-Paciente'
         )
     }
 
 //CREAR USUARIO Y GUARDAR EN LA BASE DE DATOS
-    @Post('crear-paciente')
+    @Post('crear-Paciente')
     async crearPacienteFuncion(
-        @Body() paciente: Paciente,
-        @Res() response
+        @Res() response,
+        @Body() paciente: Paciente
     ) {
-
         await this._pacienteService.crear(paciente);
 
         const parametrosConsulta = `?accion=crear&nombre=${paciente.nombres}`;
 
-        response.redirect('paciente' + parametrosConsulta)
+        response.redirect('/paciente/paciente/' + parametrosConsulta)
     }
 
 
@@ -107,30 +108,28 @@ export class PacienteController {
 
         const parametrosConsulta = `?accion=borrar&nombre=${pacienteEncontrado.nombres}`;
 
-        response.redirect('paciente' + parametrosConsulta);
+        response.redirect('/paciente/paciente/' + parametrosConsulta);
     }
 
 
     /////actualizar datos del usuario
 
-    @Get('actualizar-usuario/:idUsuario')
-    async actualizarUsuario(
-        @Param('idUsuario') idUsuario: string,
+    @Get('actualizar-Paciente/:idPaciente')
+    async actualizarPaciente(
+        @Param('idPaciente') idPaciente: string,
         @Res() response
     ) {
-        const usuarioAActualizar = await this
-            ._pacienteService
-            .buscarPorId(Number(idUsuario));
+        const usuarioActualizar = await this._pacienteService
+            .buscarPorId(Number(idPaciente));
 
         response.render(
-            'crear-paciente', {//ir a la pantalla de crear-usuario
-                paciente: usuarioAActualizar
+            'crear-Paciente', {//ir a la pantalla de crear-usuario
+                paciente: usuarioActualizar
             }
         )
     }
 
-
-    @Post('actualizar-paciente/:idPaciente')
+    @Post('actualizar-Paciente/:idPaciente')
     async actualizarPacienteFormulario(
         @Param('idPaciente') idPaciente: string,
         @Res() response,
@@ -142,8 +141,7 @@ export class PacienteController {
 
         const parametrosConsulta = `?accion=actualizar&nombre=${paciente.nombres}`;
 
-        response.redirect('/Usuario/usuario' + parametrosConsulta);
-
+        response.redirect('/paciente/paciente/' + parametrosConsulta);
     }
 }
 
