@@ -2,7 +2,7 @@ import {Entity, ManyToOne, PrimaryGeneratedColumn} from "typeorm";
 import {RolEntity} from "../rol/rol.entity";
 import {UsuarioEntity} from "../usuario/usuario.entity";
 
-@Entity('rolesPorUsuario')
+@Entity('rol_por_usuario')
 
 export class RolPorUsuarioEntity {
 

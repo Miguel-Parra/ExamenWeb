@@ -7,31 +7,20 @@ import {InjectRepository} from "@nestjs/typeorm";
 
 export class UsuarioService {
     constructor(
-          @InjectRepository(UsuarioEntity)
-        private readonly _usuarioRepository: Repository<UsuarioEntity>){
+        @InjectRepository(UsuarioEntity)
+        private readonly _usuarioRepository: Repository<UsuarioEntity>) {
     }
 
 
-
-    async autenticar (username:string, password: string):Promise<boolean> {
-
+    async autenticar(username: string, password: string): Promise<UsuarioEntity> {
+console.log(username, password)
         const consulta: FindOneOptions<UsuarioEntity> = {
             where: {
-            username: username,
-            password: password
-        }
-    };
-      const respuesta = await this._usuarioRepository.findOne(consulta) ;
+                username: username,
+                password: password
+            }
+        };
+        return await this._usuarioRepository.findOne(consulta);
 
-      if (respuesta) {
-          return true;
-      }else{
-          return false;
-      }
-
-      }
-
-
-
-
+    }
 }

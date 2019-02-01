@@ -1,7 +1,8 @@
 import {Injectable} from "@nestjs/common";
-import {Repository} from "typeorm";
+import {FindOneOptions, Repository} from "typeorm";
 import {RolPorUsuarioEntity} from "./rolPorUsuario.entity";
 import {InjectRepository} from "@nestjs/typeorm";
+import {UsuarioEntity} from "../usuario/usuario.entity";
 
 @Injectable()
 
@@ -10,6 +11,18 @@ export class RolPorUsuarioService {
     constructor (
         @InjectRepository(RolPorUsuarioEntity)
         private readonly _rolPorUsuarioRepository: Repository<RolPorUsuarioEntity>){
+
+    }
+
+
+    async acceso(idUsuario: number): Promise<RolPorUsuarioEntity> {
+
+        const consulta: FindOneOptions<RolPorUsuarioEntity> = {
+            where: {
+                usuario: idUsuario
+            }
+        };
+        return await this._rolPorUsuarioRepository.findOne(consulta);
 
     }
 

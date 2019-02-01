@@ -2,7 +2,7 @@ import {Entity, ManyToOne, PrimaryGeneratedColumn} from "typeorm";
 import {MedicamentoEntity} from "../medicamento/medicamento.entity";
 import {EventoEntity} from "../evento/evento.entity";
 
-@Entity('eventoPorMediacamento')
+@Entity('evento_por_mediacamento')
 export class EventoPorMedicamentoEntity{
 
     @PrimaryGeneratedColumn()
