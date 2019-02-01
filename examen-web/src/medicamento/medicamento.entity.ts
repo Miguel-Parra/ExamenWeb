@@ -1,6 +1,6 @@
 import {Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn} from "typeorm";
 import {PacienteEntity} from "../paciente/paciente.entity";
-import {EventoPorMedicamentoEntity} from "../eventoPorMedicamento/eventoPorMedicamento.entity";
+import {EventoPorMedicamentoEntity} from "../evento-por-medicamento/evento-por-medicamento.entity";
 
 @Entity('medicamento')
 

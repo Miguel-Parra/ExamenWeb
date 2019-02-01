@@ -1,7 +1,7 @@
 import {Controller} from "@nestjs/common";
-import {EventoPorMedicamentoService} from "./eventoPorMedicamento.service";
+import {EventoPorMedicamentoService} from "./evento-por-medicamento.service";
 
-@Controller('eventoPorMedicamento')
+@Controller('evento-por-medicamento')
 
 export class EventoPorMedicamentoController {
     constructor( private readonly _eventoPorMedicamentoService: EventoPorMedicamentoService){

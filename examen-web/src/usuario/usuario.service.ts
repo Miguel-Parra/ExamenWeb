@@ -9,11 +9,12 @@ import {Usuario} from "./usuario.controller";
 export class UsuarioService {
     constructor(
         @InjectRepository(UsuarioEntity)
-        private readonly _usuarioRepository: Repository<UsuarioEntity>){
+
+        private readonly _usuarioRepository: Repository<UsuarioEntity>) {
     }
 
 
-    async autenticar (username:string, password: string):Promise<boolean> {
+    async autenticar(username: string, password: string): Promise<UsuarioEntity> {
 
         const consulta: FindOneOptions<UsuarioEntity> = {
             where: {
@@ -21,17 +22,14 @@ export class UsuarioService {
                 password: password
             }
         };
-        const respuesta = await this._usuarioRepository.findOne(consulta) ;
 
-        if (respuesta) {
-            return true;
-        }else{
-            return false;
-        }
-
+        return await this._usuarioRepository.findOne(consulta);
     }
-
-
-
-
 }
+
+
+
+
+
+
+

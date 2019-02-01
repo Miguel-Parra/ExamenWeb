@@ -1,6 +1,6 @@
 import {Injectable} from "@nestjs/common";
 import {Repository} from "typeorm";
-import {EventoPorMedicamentoEntity} from "./eventoPorMedicamento.entity";
+import {EventoPorMedicamentoEntity} from "./evento-por-medicamento.entity";
 import {InjectRepository} from "@nestjs/typeorm";
 
 @Injectable()
