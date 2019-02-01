@@ -15,12 +15,6 @@ export class UsuarioService {
 
 
     async autenticar(username: string, password: string): Promise<UsuarioEntity> {
-console.log(username, password)
-
-     
-
-
-    async autenticar (username:string, password: string):Promise<boolean> {
 
         const consulta: FindOneOptions<UsuarioEntity> = {
             where: {
@@ -29,19 +23,13 @@ console.log(username, password)
             }
         };
 
-        const respuesta = await this._usuarioRepository.findOne(consulta) ;
-
-        if (respuesta) {
-            return true;
-        }else{
-            return false;
-        }
-
-    }
-
-
-
-
-
+        return await this._usuarioRepository.findOne(consulta);
     }
 }
+
+
+
+
+
+
+
