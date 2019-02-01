@@ -13,21 +13,22 @@ export class PacienteController {
     async paciente(
         @Res() response,
         @Query('accion') accion: string,
-        @Query('nombres') nombres: string,
-        @Query('busqueda') busqueda: string,
+        @Query('nombre') nombre: string,
+        @Query('busqueda') busqueda: string
     ) {
-        let mensaje; // undefined
+        let mensaje = undefined;
 
-        if (accion && nombres) {
+
+        if (accion && nombre) {
             switch (accion) {
                 case 'actualizar':
-                    mensaje = `Registro ${nombres} actualizado`;
+                    mensaje = `Registro ${nombre} actualizado`;
                     break;
                 case 'borrar':
-                    mensaje = `Registro ${nombres} eliminado`;
+                    mensaje = `Registro ${nombre} eliminado`;
                     break;
                 case 'crear':
-                    mensaje = `Registro ${nombres} creado`;
+                    mensaje = `Registro ${nombre} creado`;
                     break;
             }
         }
@@ -40,7 +41,6 @@ export class PacienteController {
                 where: [
                     {
                         nombres: Like(`%${busqueda}%`)
-
                     },
                     {
                         apellidos: Like(`%${busqueda}%`)
@@ -66,7 +66,7 @@ export class PacienteController {
         response.render('lista-pacientes',
             {
                 arregloPaciente: pacientes,
-                mensaje: mensaje,
+                mensaje: mensaje
             })
     }
 
@@ -90,7 +90,7 @@ export class PacienteController {
 
         const parametrosConsulta = `?accion=crear&nombre=${paciente.nombres}`;
 
-        response.redirect('/paciente/paciente/' + parametrosConsulta)
+        response.redirect('/paciente/paciente' + parametrosConsulta)
     }
 
 
@@ -108,7 +108,7 @@ export class PacienteController {
 
         const parametrosConsulta = `?accion=borrar&nombre=${pacienteEncontrado.nombres}`;
 
-        response.redirect('/paciente/paciente/' + parametrosConsulta);
+        response.redirect('/paciente/paciente' + parametrosConsulta);
     }
 
 
@@ -141,7 +141,7 @@ export class PacienteController {
 
         const parametrosConsulta = `?accion=actualizar&nombre=${paciente.nombres}`;
 
-        response.redirect('/paciente/paciente/' + parametrosConsulta);
+        response.redirect('/paciente' + parametrosConsulta);
     }
 }
 
