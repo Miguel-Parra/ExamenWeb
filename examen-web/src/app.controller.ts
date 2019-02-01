@@ -1,7 +1,7 @@
 import {Get, Controller, Res, Post, Body, Session} from '@nestjs/common';
 import { AppService } from './app.service';
 import {UsuarioService} from "./usuario/usuario.service";
-import {RolPorUsuarioService} from "./rolPorUsuario/rolPorUsuario.service";
+import {RolPorUsuarioService} from "./rol-por-usuario/rol-por-usuario.service";
 
 @Controller()
 export class AppController {

@@ -1,7 +1,7 @@
 import {Controller} from "@nestjs/common";
-import {RolPorUsuarioService} from "./rolPorUsuario.service";
+import {RolPorUsuarioService} from "./rol-por-usuario.service";
 
-@Controller('rolPorUsuario')
+@Controller('rol-por-usuario')
 
 export class RolPorUsuarioController {
     constructor( private readonly _rolPorUsuarioService: RolPorUsuarioService){

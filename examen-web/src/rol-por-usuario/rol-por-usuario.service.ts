@@ -1,6 +1,6 @@
 import {Injectable} from "@nestjs/common";
 import {FindOneOptions, Repository} from "typeorm";
-import {RolPorUsuarioEntity} from "./rolPorUsuario.entity";
+import {RolPorUsuarioEntity} from "./rol-por-usuario.entity";
 import {InjectRepository} from "@nestjs/typeorm";
 import {UsuarioEntity} from "../usuario/usuario.entity";
 

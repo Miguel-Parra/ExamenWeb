@@ -1,5 +1,5 @@
 import {Column, Entity, OneToMany, PrimaryGeneratedColumn} from "typeorm";
-import {RolPorUsuarioEntity} from "../rolPorUsuario/rolPorUsuario.entity";
+import {RolPorUsuarioEntity} from "../rol-por-usuario/rol-por-usuario.entity";
 
 @Entity('rol')
 

@@ -1,8 +1,8 @@
 import {Module} from "@nestjs/common";
 import {TypeOrmModule} from "@nestjs/typeorm";
-import {RolPorUsuarioEntity} from "./rolPorUsuario.entity";
-import {RolPorUsuarioController} from "./rolPorUsuario.controller";
-import {RolPorUsuarioService} from "./rolPorUsuario.service";
+import {RolPorUsuarioEntity} from "./rol-por-usuario.entity";
+import {RolPorUsuarioController} from "./rol-por-usuario.controller";
+import {RolPorUsuarioService} from "./rol-por-usuario.service";
 
 @Module(
     {

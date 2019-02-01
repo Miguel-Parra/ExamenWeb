@@ -6,15 +6,15 @@ import {RolEntity} from "./rol/rol.entity";
 import {UsuarioEntity} from "./usuario/usuario.entity";
 import {MedicamentoEntity} from "./medicamento/medicamento.entity";
 import {PacienteEntity} from "./paciente/paciente.entity";
-import {RolPorUsuarioEntity} from "./rolPorUsuario/rolPorUsuario.entity";
+import {RolPorUsuarioEntity} from "./rol-por-usuario/rol-por-usuario.entity";
 import {EventoEntity} from "./evento/evento.entity";
-import {EventoPorMedicamentoEntity} from "./eventoPorMedicamento/eventoPorMedicamento.entity";
+import {EventoPorMedicamentoEntity} from "./evento-por-medicamento/evento-por-medicamento.entity";
 import {MedicamentoModule} from "./medicamento/medicamento.module";
 import {PacienteModule} from "./paciente/paciente.module";
-import {RolPorUsuarioModule} from "./rolPorUsuario/rolPorUsuario.module";
+import {RolPorUsuarioModule} from "./rol-por-usuario/rol-por-usuario.module";
 import {UsuarioModule} from "./usuario/usuario.module";
 import {EventoModule} from "./evento/evento.module";
-import {EventoPorMedicamentoModule} from "./eventoPorMedicamento/eventoPorMedicamento.module";
+import {EventoPorMedicamentoModule} from "./evento-por-medicamento/evento-por-medicamento.module";
 
 @Module({
   imports: [
