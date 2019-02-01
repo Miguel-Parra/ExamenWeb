@@ -13,7 +13,6 @@ import {PacienteService} from "./paciente.service";
 
     }
 )
-
 export class PacienteModule{
 
 }
