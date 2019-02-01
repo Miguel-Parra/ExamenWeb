@@ -1,4 +1,9 @@
-<h1>Registro de Medicamento</h1>
+<% const estaCreando = typeof medicamento === "undefined"%>
+
+<h1> <%= estaCreando ? 'Registrar':'Actualizar' %> Medicamento</h1>
+
+<p><%= estaCreando ? 'Registre':'Actualice' %> un Medicamento</p>
+
 
 <form action=""
       method="POST">
@@ -50,7 +55,7 @@
                value="">
     </div>
     <br>
-    <button>Crear Paciente</button>
+    <button><%= estaCreando ? 'Crear' : 'Actualizar' %> medicamento</button>
 
 </form>
 

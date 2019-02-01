@@ -1,0 +1,48 @@
+<% const estaCreando = typeof usuario === "undefined"%>
+
+<h1> <%= estaCreando ? 'Registrar':'Actualizar' %> Usuario</h1>
+
+<p><%= estaCreando ? 'Registre':'Actualice' %> un Usuario</p>
+
+
+<form action=""
+      method="POST">
+    <div>
+        <label for="nombre">Nombre:</label>
+        <input id="nombre"
+               type="text"
+               name="nombre"
+               value="">
+    </div>
+    <br>
+    <div>
+        <label for="correo">Correo:</label>
+        <input id="correo"
+               type="text"
+               name="correo"
+               value="">
+    </div>
+    <br>
+    <div>
+        <label for="password">Password:</label>
+        <input id="password"
+               type="password"
+               name="password"
+               value="">
+    </div>
+    <br>
+    <div>
+        <label for="fechaNacimiento">Fecha de Nacimiento:</label>
+        <input id="fechaNacimiento"
+               type="text"
+               name="fechaNacimiento"
+               value="">
+    </div>
+    <br>
+    <button><%= estaCreando ? 'Crear' : 'Actualizar' %> usuario</button>
+
+</form>
+
+<a href="">
+    <button>Regresar</button>
+</a>

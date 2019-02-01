@@ -14,7 +14,7 @@ export class AppController {
         res.render('login')
     }
 
-
+/*
     @Post('login')
     metodoLogin(
         @Body('username') username:string,
@@ -35,5 +35,5 @@ export class AppController {
 
 
 
-){}
+){}*/
 }

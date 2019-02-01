@@ -1,4 +1,4 @@
-import {Controller} from "@nestjs/common";
+import {Controller, Get, Res} from "@nestjs/common";
 import {MedicamentoService} from "./medicamento.service";
 
 @Controller('medicamento')
@@ -6,4 +6,20 @@ import {MedicamentoService} from "./medicamento.service";
 export class MedicamentoController {
     constructor ( private readonly _medicamentoService: MedicamentoService){}
 
+    @Get('crearMedicamento')
+    mostrarCrearMedicamento(
+        @Res() response,
+    ) {
+        response.render('crearMedicamento')
+    }
+}
+
+export interface Medicamento{
+    id?:number;
+    gramosAIngerir: number;
+    nombreMedicamento: string;
+    composicion: string;
+    usadoPara: string;
+    fechaCaducidad: string;
+    numeroPastillas: string;
 }
