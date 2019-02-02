@@ -23,7 +23,9 @@ export class UsuarioService {
             }
         };
 
-        return await this._usuarioRepository.findOne(consulta);
+        return await this._usuarioRepository.findOne(consulta)
+
+
     }
 }
 

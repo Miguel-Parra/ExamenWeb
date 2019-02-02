@@ -28,7 +28,7 @@ export class AppController {
         console.log(username,password)
         const respuesta = await this._usuarioService.autenticar(username, password)
 
-        console.log(respuesta)
+        //console.log(respuesta)
 
         if (respuesta) {
 
