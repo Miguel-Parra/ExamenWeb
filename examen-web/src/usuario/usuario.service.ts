@@ -3,6 +3,8 @@ import {FindOneOptions, Repository} from "typeorm";
 import {UsuarioEntity} from "./usuario.entity";
 import {InjectRepository} from "@nestjs/typeorm";
 import {Usuario} from "./usuario.controller";
+import {PacienteEntity} from "../paciente/paciente.entity";
+import {Paciente} from "../paciente/paciente.service";
 
 @Injectable()
 
@@ -13,6 +15,13 @@ export class UsuarioService {
         private readonly _usuarioRepository: Repository<UsuarioEntity>) {
     }
 
+    async crear(nuevoUsuario: Usuario): Promise<UsuarioEntity> {
+
+        // Instanciar una entidad -> .create()
+        const usuarioEntity = this._usuarioRepository.create(nuevoUsuario);
+        const usuarioCreado = await this._usuarioRepository.save(usuarioEntity);
+        return usuarioCreado;
+    }
 
     async autenticar(username: string, password: string): Promise<UsuarioEntity> {
 

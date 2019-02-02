@@ -4,14 +4,21 @@
 
 <p><%= estaCreando ? 'Registre':'Actualice' %> un Paciente</p>
 
-<form action=""
+<form action="/paciente/<%= estaCreando ? 'crear' : 'actualizar' %>-Paciente/<%= estaCreando ? '' : paciente.id %>"
       method="POST">
+    <div>
+        <label for="usuario"></label>
+        <input id="usuario"
+               type="text"
+               name="usuario"
+               value="1" hidden>
+    </div>
     <div>
         <label for="nombres">Nombres:</label>
         <input id="nombres"
                type="text"
                name="nombres"
-               value="">
+               value="<%= estaCreando ? '' : paciente.nombres %>">
     </div>
     <br>
     <div>
@@ -19,7 +26,7 @@
         <input id="apellidos"
                type="text"
                name="apellidos"
-               value="">
+               value="<%= estaCreando ? '' : paciente.apellidos %>">
     </div>
     <br>
     <div>
@@ -27,7 +34,7 @@
         <input id="fechaNacimiento"
                type="text"
                name="fechaNacimiento"
-               value="">
+               value="<%= estaCreando ? '' : paciente.fechaNacimiento %>">
     </div>
     <br>
     <div>
@@ -35,7 +42,7 @@
         <input id="hijos"
                type="text"
                name="hijos"
-               value="">
+               value="<%= estaCreando ? '' : paciente.hijos %>">
     </div>
     <br>
     <div>
@@ -43,13 +50,13 @@
         <input id="tieneSeguro"
                type="text"
                name="tieneSeguro"
-               value="">
+               value="<%= estaCreando ? '' : paciente.tieneSeguro %>">
     </div>
     <br>
     <button><%= estaCreando ? 'Crear' : 'Actualizar' %> paciente</button>
 
 </form>
 
-<a href="">
+<a href="/paciente/paciente">
     <button>Regresar</button>
 </a>
