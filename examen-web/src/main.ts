@@ -13,15 +13,13 @@ const FileStore = FileSession(session);
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-
-
   app.use(
       session({
         secret: 'No sera de tomar un traguito',
         resave: false,
         saveUninitialized: true,
         cookie: {secure: false},
-        name: 'server-session-id',
+        //name: 'server-session-id',
         store: new FileStore()
       })
   )

@@ -1,4 +1,4 @@
-import {Body, Controller, Get, Param, Post, Query, Res} from "@nestjs/common";
+import {Body, Controller, Get, Param, Post, Query, Res, Session} from "@nestjs/common";
 import {Paciente, PacienteService} from "./paciente.service";
 import {PacienteEntity} from "./paciente.entity";
 import {FindManyOptions, Like} from "typeorm";
@@ -14,10 +14,11 @@ export class PacienteController {
         @Res() response,
         @Query('accion') accion: string,
         @Query('nombre') nombre: string,
-        @Query('busqueda') busqueda: string
+        @Query('busqueda') busqueda: string,
+        @Session() sesion
     ) {
         let mensaje = undefined;
-
+        console.log(sesion)
 
         if (accion && nombre) {
             switch (accion) {
@@ -66,7 +67,8 @@ export class PacienteController {
         response.render('lista-pacientes',
             {
                 arregloPaciente: pacientes,
-                mensaje: mensaje
+                mensaje: mensaje,
+
             })
     }
 
@@ -84,8 +86,10 @@ export class PacienteController {
     @Post('crear-Paciente')
     async crearPacienteFuncion(
         @Res() response,
-        @Body() paciente: Paciente
+        @Body() paciente: Paciente,
+        @Session() sesion
     ) {
+        paciente.usuario=sesion.idUsuario;
         await this._pacienteService.crear(paciente);
 
         const parametrosConsulta = `?accion=crear&nombre=${paciente.nombres}`;

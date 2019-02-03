@@ -2,6 +2,7 @@ import {Injectable} from "@nestjs/common";
 import {FindManyOptions, Repository} from "typeorm";
 import {PacienteEntity} from "./paciente.entity";
 import {InjectRepository} from "@nestjs/typeorm";
+import {UsuarioEntity} from "../usuario/usuario.entity";
 
 @Injectable()
 
@@ -51,4 +52,5 @@ export interface Paciente{
     fechaNacimiento:string;
     hijos: number;
     tieneSeguro: string;
+    usuario:UsuarioEntity;
 }

@@ -5,6 +5,7 @@ import {InjectRepository} from "@nestjs/typeorm";
 import {Usuario} from "./usuario.controller";
 import {PacienteEntity} from "../paciente/paciente.entity";
 import {Paciente} from "../paciente/paciente.service";
+import {stringify} from "querystring";
 
 @Injectable()
 
@@ -24,13 +25,13 @@ export class UsuarioService {
     }
 
     async autenticar(username: string, password: string): Promise<UsuarioEntity> {
-
         const consulta: FindOneOptions<UsuarioEntity> = {
             where: {
-                username: username,
+                nombre: username,
                 password: password
             }
         };
+        //console.log(stringify(consulta))
 
         return await this._usuarioRepository.findOne(consulta)
 
