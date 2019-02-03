@@ -51,6 +51,6 @@ export interface Paciente{
     apellidos:string;
     fechaNacimiento:string;
     hijos: number;
-    tieneSeguro: string;
+    tieneSeguro: boolean;
     usuario:UsuarioEntity;
 }

@@ -40,11 +40,11 @@ export class AppController {
                 sesion.idUsuario = idUsuario;
                // console.log(sesion)
                 switch (nombreRol) {
-                    case 'normal':
+                    case 'usuario':
                         res.redirect('paciente/paciente')
                         break;
-                    case 'admin':
-                        res.send('sin vista')
+                    case 'administrador':
+                        res.redirect('usuario/inicio')
                         break;
                     default:
                         res.send('Aun no se ha asignado una tarea para este rol')

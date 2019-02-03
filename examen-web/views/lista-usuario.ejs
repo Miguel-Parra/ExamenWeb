@@ -1,0 +1,53 @@
+<% const existeMensaje = typeof mensaje !== "undefined"%>
+
+<style>
+    table, th, td {
+        border: 1px solid black;
+        border-collapse: collapse;
+    }
+</style>
+
+<% if (existeMensaje){%>
+<p>MENSAJE: <%=mensaje%></p>
+<%}%>
+
+<h1>Lista de usuarios</h1>
+
+<form action="/usuario/inicio" method="get">
+
+    <label for="busqueda">Búsqueda</label>
+    <input id="busqueda" type="text" name="busqueda">
+
+    <button>Buscar</button>
+</form>
+
+
+
+<table>
+    <!-- tr -> table row -->
+    <tr>
+        <!-- th -> table header -->
+        <th>Nombre</th>
+        <th>Correo</th>
+        <th>Fecha de Nacimiento</th>
+        <th>Acciones</th>
+    </tr>
+    <!-- tr -> table row -->
+    <% arregloUsuario.forEach( (usuario)=> { %>
+        <tr>
+            <!-- td -> table detail -->
+            <td><%= usuario.nombre %></td>
+            <td><%= usuario.correo %></td>
+            <td><%= usuario.fechaNacimiento %></td>
+            <td>
+                <a href="/usuario/actualizar/<%= usuario.id %>">
+                    <button>Actualizar</button>
+                </a>
+                <form action="/usuario/borrar/<%= usuario.id %>" method="POST">
+                    <button type="submit"> Eliminar</button>
+                </form>
+
+            </td>
+        </tr>
+    <% }) %>
+</table>

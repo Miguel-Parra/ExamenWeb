@@ -1,5 +1,5 @@
 import {Injectable} from "@nestjs/common";
-import {FindOneOptions, Repository} from "typeorm";
+import {FindManyOptions, FindOneOptions, Repository} from "typeorm";
 import {UsuarioEntity} from "./usuario.entity";
 import {InjectRepository} from "@nestjs/typeorm";
 import {Usuario} from "./usuario.controller";
@@ -16,6 +16,12 @@ export class UsuarioService {
         private readonly _usuarioRepository: Repository<UsuarioEntity>) {
     }
 
+
+    buscar(parametros?: FindManyOptions<UsuarioEntity>): Promise<UsuarioEntity[]> {
+        return this._usuarioRepository.find(parametros)
+    }
+
+
     async crear(nuevoUsuario: Usuario): Promise<UsuarioEntity> {
 
         // Instanciar una entidad -> .create()
@@ -24,6 +30,17 @@ export class UsuarioService {
         return usuarioCreado;
     }
 
+
+    borrar(id: number): Promise<UsuarioEntity> {
+        const usuarioEntityEliminar = this._usuarioRepository.create({
+            id: id
+        });
+        return this._usuarioRepository.remove(usuarioEntityEliminar)
+    }
+
+    buscarPorId(id: number): Promise<UsuarioEntity> {
+        return this._usuarioRepository.findOne(id)
+    }
     async autenticar(username: string, password: string): Promise<UsuarioEntity> {
         const consulta: FindOneOptions<UsuarioEntity> = {
             where: {
