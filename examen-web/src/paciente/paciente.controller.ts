@@ -1,4 +1,4 @@
-import {Body, Controller, Get, Param, Post, Query, Res, Session} from "@nestjs/common";
+import {BadRequestException, Body, Controller, Get, Param, Post, Query, Res, Session} from "@nestjs/common";
 import {Paciente, PacienteService} from "./paciente.service";
 import {PacienteEntity} from "./paciente.entity";
 import {FindManyOptions, Like} from "typeorm";
@@ -17,59 +17,64 @@ export class PacienteController {
         @Query('busqueda') busqueda: string,
         @Session() sesion
     ) {
-        let mensaje = undefined;
-        console.log(sesion)
+        console.log(sesion.rol)
 
-        if (accion && nombre) {
-            switch (accion) {
-                case 'actualizar':
-                    mensaje = `Registro ${nombre} actualizado`;
-                    break;
-                case 'borrar':
-                    mensaje = `Registro ${nombre} eliminado`;
-                    break;
-                case 'crear':
-                    mensaje = `Registro ${nombre} creado`;
-                    break;
+        if(sesion.rol==='normal') {
+            let mensaje = undefined;
+            console.log(sesion)
+
+            if (accion && nombre) {
+                switch (accion) {
+                    case 'actualizar':
+                        mensaje = `Registro ${nombre} actualizado`;
+                        break;
+                    case 'borrar':
+                        mensaje = `Registro ${nombre} eliminado`;
+                        break;
+                    case 'crear':
+                        mensaje = `Registro ${nombre} creado`;
+                        break;
+                }
             }
+
+            let pacientes: PacienteEntity[];
+
+            if (busqueda) {
+
+                const consulta: FindManyOptions<PacienteEntity> = {
+                    where: [
+                        {
+                            nombres: Like(`%${busqueda}%`)
+                        },
+                        {
+                            apellidos: Like(`%${busqueda}%`)
+                        },
+                        {
+                            fechaNacimiento: Like(`%${busqueda}%`)
+                        },
+                        {
+                            hijos: Like(`%${busqueda}%`)
+                        },
+                        {
+                            tieneSeguro: Like(`%${busqueda}%`)
+                        },
+                    ]
+                };
+
+                pacientes = await this._pacienteService.buscar(consulta);
+            } else {
+                pacientes = await this._pacienteService.buscar();
+            }
+
+            response.render('lista-pacientes',
+                {
+                    arregloPaciente: pacientes,
+                    mensaje: mensaje,
+
+                })
+        }else{
+            throw new BadRequestException({mensaje: "No tiene acceso a esta vista"});
         }
-
-        let pacientes: PacienteEntity[];
-
-        if (busqueda) {
-
-            const consulta:FindManyOptions<PacienteEntity> = {
-                where: [
-                    {
-                        nombres: Like(`%${busqueda}%`)
-                    },
-                    {
-                        apellidos: Like(`%${busqueda}%`)
-                    },
-                    {
-                        fechaNacimiento: Like(`%${busqueda}%`)
-                    },
-                    {
-                        hijos: Like(`%${busqueda}%`)
-                    },
-                    {
-                        tieneSeguro: Like(`%${busqueda}%`)
-                    },
-                ]
-            };
-
-            pacientes = await this._pacienteService.buscar(consulta);
-        }
-        else {
-            pacientes = await this._pacienteService.buscar();
-        }
-
-        response.render('lista-pacientes',
-            {
-                arregloPaciente: pacientes,
-                mensaje: mensaje,
-
-            })
     }
 
 //se inicializa la pantalla de crear usuario
