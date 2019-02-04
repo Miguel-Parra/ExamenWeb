@@ -40,7 +40,7 @@
             <td><%= usuario.correo %></td>
             <td><%= usuario.fechaNacimiento %></td>
             <td>
-                <a href="/usuario/actualizar/<%= usuario.id %>">
+                <a href="/rol-por-usuario/asignar-rol/<%= usuario.id %>">
                     <button>Actualizar</button>
                 </a>
                 <form action="/usuario/borrar/<%= usuario.id %>" method="POST">

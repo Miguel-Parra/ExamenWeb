@@ -1,0 +1,42 @@
+/*busqueda por etiqueta o QUERY SELECTORS*/
+p  {
+    background-color: aliceblue;
+}
+/*busqueda por clase*/
+.rojo  {
+    background-color: red;
+}
+.amarillo  {
+    background-color: yellow;
+}
+.azul  {
+    background-color: blue;
+}
+/*busqueda por identificador*/
+#titulo  {
+    background-color: green;
+}
+
+/*busqueda compleja*/
+p.amarillo{
+    background-color: pink;
+}
+
+p.amarillo.azul{
+    background-color: black;
+    color: white;
+}
+
+/*etiqueta_antes + etiqueta_despues */
+
+h1+p{
+    background-color: lawngreen;
+}
+h1.amarillo + p.amarillo{
+    background-color: orange;
+}
+
+/*ETIQUETA_PAPA > ETIQUETA_HIJOP > ETIQUETA_NIETO*/
+ul > li > span{
+    background-color: purple;
+}

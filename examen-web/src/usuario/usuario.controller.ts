@@ -3,11 +3,16 @@ import {UsuarioService} from "./usuario.service";
 import {UsuarioEntity} from "./usuario.entity";
 import {PacienteEntity} from "../paciente/paciente.entity";
 import {FindManyOptions, Like} from "typeorm";
+import {stringify} from "querystring";
+import {RolPorUsuarioService} from "../rol-por-usuario/rol-por-usuario.service";
+import {RolPorUsuarioEntity} from "../rol-por-usuario/rol-por-usuario.entity";
 
 @Controller('usuario')
 
 export class UsuarioController {
-    constructor( private readonly _usuarioService: UsuarioService){
+    constructor( private readonly _usuarioService: UsuarioService,
+                 //private readonly _rolPorUsuarioServicio:RolPorUsuarioService
+                 ) {
 
     }
 
@@ -46,9 +51,6 @@ async mostrarUsuario(
                     {
                         correo: Like(`%${busqueda}%`)
                     },
-                    {
-                        fechaNacimiento: Like(`%${busqueda}%`)
-                    }
                 ]
             };
 
@@ -87,9 +89,6 @@ async mostrarUsuario(
 
         response.redirect('/usuario/inicio' + parametrosConsulta);
     }
-
-
-
 
 
 

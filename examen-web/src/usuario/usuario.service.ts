@@ -41,6 +41,7 @@ export class UsuarioService {
     buscarPorId(id: number): Promise<UsuarioEntity> {
         return this._usuarioRepository.findOne(id)
     }
+
     async autenticar(username: string, password: string): Promise<UsuarioEntity> {
         const consulta: FindOneOptions<UsuarioEntity> = {
             where: {
@@ -48,12 +49,13 @@ export class UsuarioService {
                 password: password
             }
         };
-        //console.log(stringify(consulta))
 
         return await this._usuarioRepository.findOne(consulta)
 
-
     }
+
+
+
 }
 
 
