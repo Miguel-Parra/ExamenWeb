@@ -5,14 +5,21 @@
 <p><%= estaCreando ? 'Registre':'Actualice' %> un Medicamento</p>
 
 
-<form action=""
+<form action="/medicamento/<%= estaCreando ? 'crear' : 'actualizar' %>-Medicamento/<%= estaCreando ? '' : medicamento.id %>"
       method="POST">
+    <div>
+        <label for="paciente"></label>
+        <input id="paciente"
+               type="text"
+               name="paciente"
+               value="<%= estaCreando ? '' : paciente.id %>" hidden>
+    </div>
     <div>
         <label for="gramosAIngerir">Gramos a ingerir:</label>
         <input id="gramosAIngerir"
                type="text"
                name="gramosAIngerir"
-               value="">
+               value="<%= estaCreando ? '' : medicamento.gramosAIngerir %>">
     </div>
     <br>
     <div>
@@ -20,7 +27,7 @@
         <input id="nombreMedicamento"
                type="text"
                name="nombreMedicamento"
-               value="">
+               value="<%= estaCreando ? '' : medicamento.nombreMedicamento %>">
     </div>
     <br>
     <div>
@@ -28,7 +35,7 @@
         <input id="composicion"
                type="text"
                name="composicion"
-               value="">
+               value="<%= estaCreando ? '' : medicamento.composicion %>">
     </div>
     <br>
     <div>
@@ -36,7 +43,7 @@
         <input id="usadoPara"
                type="text"
                name="usadoPara"
-               value="">
+               value="<%= estaCreando ? '' : medicamento.usadoPara %>">
     </div>
     <br>
     <div>
@@ -44,7 +51,7 @@
         <input id="fechaCaducidad"
                type="text"
                name="fechaCaducidad"
-               value="">
+               value="<%= estaCreando ? '' : medicamento.fechaCaducidad %>">
     </div>
     <br>
     <div>
@@ -52,13 +59,13 @@
         <input id="numeroPastillas"
                type="text"
                name="numeroPastillas"
-               value="">
+               value="<%= estaCreando ? '' : medicamento.numeroPastillas %>">
     </div>
     <br>
     <button><%= estaCreando ? 'Crear' : 'Actualizar' %> medicamento</button>
 
 </form>
 
-<a href="">
+<a href="/medicamento/medicamento">
     <button>Regresar</button>
 </a>
