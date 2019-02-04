@@ -15,6 +15,7 @@ import {RolPorUsuarioModule} from "./rol-por-usuario/rol-por-usuario.module";
 import {UsuarioModule} from "./usuario/usuario.module";
 import {EventoModule} from "./evento/evento.module";
 import {EventoPorMedicamentoModule} from "./evento-por-medicamento/evento-por-medicamento.module";
+import {RolModule} from "./rol/rol.module";
 
 @Module({
   imports: [
@@ -38,7 +39,8 @@ import {EventoPorMedicamentoModule} from "./evento-por-medicamento/evento-por-me
     PacienteModule,
     MedicamentoModule,
     RolPorUsuarioModule,
-      ],
+    RolModule
+  ],
   controllers: [AppController],
   providers: [AppService],
 })

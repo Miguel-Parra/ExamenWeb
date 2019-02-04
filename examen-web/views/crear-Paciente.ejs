@@ -6,13 +6,7 @@
 
 <form action="/paciente/<%= estaCreando ? 'crear' : 'actualizar' %>-Paciente/<%= estaCreando ? '' : paciente.id %>"
       method="POST">
-    <div>
-        <label for="usuario"></label>
-        <input id="usuario"
-               type="text"
-               name="usuario"
-               value="1" hidden>
-    </div>
+
     <div>
         <label for="nombres">Nombres:</label>
         <input id="nombres"
@@ -40,7 +34,7 @@
     <div>
         <label for="hijos">Hijos:</label>
         <input id="hijos"
-               type="text"
+               type="number"
                name="hijos"
                value="<%= estaCreando ? '' : paciente.hijos %>">
     </div>
@@ -52,6 +46,8 @@
                name="tieneSeguro"
                value="<%= estaCreando ? '' : paciente.tieneSeguro %>">
     </div>
+
+
     <br>
     <button><%= estaCreando ? 'Crear' : 'Actualizar' %> paciente</button>
 

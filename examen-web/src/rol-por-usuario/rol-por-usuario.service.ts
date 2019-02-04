@@ -3,6 +3,7 @@ import {FindOneOptions, Repository} from "typeorm";
 import {RolPorUsuarioEntity} from "./rol-por-usuario.entity";
 import {InjectRepository} from "@nestjs/typeorm";
 import {UsuarioEntity} from "../usuario/usuario.entity";
+import {stringify} from "querystring";
 
 @Injectable()
 
@@ -15,15 +16,16 @@ export class RolPorUsuarioService {
     }
 
 
-    async acceso(idUsuario: number): Promise<RolPorUsuarioEntity> {
+    async verificarRol(idUsuario: number): Promise<RolPorUsuarioEntity> {
 
         const consulta: FindOneOptions<RolPorUsuarioEntity> = {
             where: {
-                usuario: idUsuario
-            }
+                usuario: idUsuario,
+
+            },
+            relations:['rol','usuario']
         };
         return await this._rolPorUsuarioRepository.findOne(consulta);
-
     }
 
 }

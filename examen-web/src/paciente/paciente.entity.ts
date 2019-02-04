@@ -38,7 +38,7 @@ export class PacienteEntity{
         name: "tiene_seguro",
         type: "varchar",
     })
-    tieneSeguro: string;
+    tieneSeguro: boolean;
 
     @ManyToOne(
         type => UsuarioEntity,

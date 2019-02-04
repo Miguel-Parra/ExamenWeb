@@ -1,13 +1,14 @@
-import {Get, Controller, Res, Post, Body, Session} from '@nestjs/common';
+import {Get, Controller, Res, Post, Body, Session, BadRequestException} from '@nestjs/common';
 import { AppService } from './app.service';
 import {UsuarioService} from "./usuario/usuario.service";
 import {RolPorUsuarioService} from "./rol-por-usuario/rol-por-usuario.service";
+import {RolService} from "./rol/rol.service";
 
 @Controller()
 export class AppController {
     constructor(private readonly _appService: AppService,
                 private readonly _usuarioService: UsuarioService,
-                private readonly _rolPorUsuarioServicio: RolPorUsuarioService) {
+                private readonly _rolPorUsuarioServicio: RolPorUsuarioService){
     }
 
     @Get('login')
@@ -23,35 +24,58 @@ export class AppController {
         @Body('password') password: string,
         @Res() res,
         @Session() sesion,
+
     ) {
 
-        console.log(username,password)
-        const respuesta = await this._usuarioService.autenticar(username, password)
+        const autenticacion = await this._usuarioService.autenticar(username, password)
 
-        console.log(respuesta)
+        if (autenticacion) {
+            const idUsuario = autenticacion.id;
+            const rolUsuario = await this._rolPorUsuarioServicio.verificarRol(+idUsuario)
 
-        if (respuesta) {
-
-            const idUsuario = respuesta.id;
-
-
-            const existeRol = await this._rolPorUsuarioServicio.acceso(+idUsuario)
-
-            if (existeRol){
-                sesion.username =username ;
+            if (rolUsuario) {
+                const nombreRol=rolUsuario.rol.nombreRol
+                sesion.rol = nombreRol
+                sesion.username = username;
                 sesion.idUsuario = idUsuario;
-                sesion.nombreRol = existeRol.id
-                res.send('ok')
+               // console.log(sesion)
+                switch (nombreRol) {
+                    case 'usuario':
+                        res.redirect('paciente/paciente')
+                        break;
+                    case 'administrador':
+                        res.redirect('usuario/inicio')
+                        break;
+                    default:
+                        res.send('Aun no se ha asignado una tarea para este rol')
 
-            }else {
-                res.send('sin rol')
+                }
+            } else {
+                //res.send('sin rol')
+                throw new BadRequestException({mensaje: 'Espere estamos verificando sus datos'})
             }
 
         } else {
-
             res.redirect('login')
         }
     }
+
+    @Get('logout')
+    async logout(
+        @Res() res,
+        @Session() sesion,
+    )
+    {
+
+        sesion.usuario = undefined;
+        sesion.destroy()
+        res.redirect('login')
+    }
+
+
+
+
+
 }
 
 
