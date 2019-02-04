@@ -52,6 +52,10 @@
                 <a href="/paciente/actualizar-Paciente/<%= paciente.id %>">
                     <button>Actualizar</button>
                 </a>
+                <form action="/paciente/lista-medicamentos/<%= paciente.id %>" method="post">
+                    <button type="submit">Ver Medicamentos</button>
+                </form>
+
             </td>
         </tr>
     <% }) %>

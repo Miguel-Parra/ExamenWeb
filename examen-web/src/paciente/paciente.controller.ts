@@ -141,7 +141,16 @@ export class PacienteController {
 
         const parametrosConsulta = `?accion=actualizar&nombre=${paciente.nombres}`;
 
-        response.redirect('/paciente' + parametrosConsulta);
+        response.redirect('/paciente/paciente' + parametrosConsulta);
+    }
+
+    @Post('lista-medicamentos/:idPaciente')
+    async medicamentoPaci(
+        @Param('idPaciente') idPaciente: string,
+        @Res() response,
+        @Body() paciente:Paciente
+    ){
+        response.render('lista-medicamentos')
     }
 }
 
