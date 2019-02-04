@@ -10,12 +10,16 @@ export class MedicamentoController {
     }
 
 
-    @Get('medicamento')
-    async medicamento(
+
+
+
+    @Get('inicio/:idPaciente')
+    async mostrarMedicamento(
         @Res() response,
         @Query('accion') accion: string,
         @Query('nombre') nombre: string,
-        @Query('busqueda') busqueda: string
+        @Query('busquedaMedicamento') busquedaMedicamento: string,
+        @Param('idPaciente') idPaciente: string,
     ) {
         let mensaje = undefined;
 
@@ -34,29 +38,36 @@ export class MedicamentoController {
             }
         }
 
+
         let medicamentos: MedicamentoEntity[];
 
-        if (busqueda) {
+        let medicamentoUsuario: MedicamentoEntity[];
+
+        medicamentoUsuario = await this._medicamentoService.buscarPorIdPaciente(Number(idPaciente));
+
+
+
+        if (busquedaMedicamento) {
 
             const consulta: FindManyOptions<MedicamentoEntity> = {
                 where: [
                     {
-                        gramosAIngerir: Like(`%${busqueda}%`)
+                        gramosAIngerir: Like(`%${busquedaMedicamento}%`)
                     },
                     {
-                        nombreMedicamento: Like(`%${busqueda}%`)
+                        nombreMedicamento: Like(`%${busquedaMedicamento}%`)
                     },
                     {
-                        composicion: Like(`%${busqueda}%`)
+                        composicion: Like(`%${busquedaMedicamento}%`)
                     },
                     {
-                        usadoPara: Like(`%${busqueda}%`)
+                        usadoPara: Like(`%${busquedaMedicamento}%`)
                     },
                     {
-                        fechaCaducidad: Like(`%${busqueda}%`)
+                        fechaCaducidad: Like(`%${busquedaMedicamento}%`)
                     },
                     {
-                        numeroPastillas: Like(`%${busqueda}%`)
+                        numeroPastillas: Like(`%${busquedaMedicamento}%`)
                     },
                 ]
             };
@@ -69,10 +80,16 @@ export class MedicamentoController {
 
         response.render('lista-medicamentos',
             {
-                arregloMedicamentos: medicamentos,
+                arregloMedicamentos: medicamentoUsuario,
                 mensaje: mensaje
             })
     }
+
+
+
+
+
+
 
     //se inicializa la pantalla de crear medicamento
     @Get('crear-Medicamento')

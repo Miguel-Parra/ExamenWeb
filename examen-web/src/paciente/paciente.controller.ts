@@ -179,13 +179,6 @@ response.render('lista-pacientes',
         response.redirect('/paciente/paciente' + parametrosConsulta);
     }
 
-    @Post('lista-medicamentos/:idPaciente')
-    async medicamentoPaci(
-        @Param('idPaciente') idPaciente: string,
-        @Res() response,
-        @Body() paciente:Paciente
-    ){
-        response.render('lista-medicamentos')
-    }
+
 }
 
