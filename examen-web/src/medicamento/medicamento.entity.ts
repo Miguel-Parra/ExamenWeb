@@ -38,16 +38,15 @@ export class MedicamentoEntity {
 
     @Column({
         name: "fecha_caducidad",
-        type: "varchar",
-        length: 20
+        type: "date"
     })
-    fechaCaducidad: string;
+    fechaCaducidad: Date;
 
     @Column({
         name: "numero_pastillas",
         type: "int",
     })
-    numeroPastillas: string;
+    numeroPastillas: number;
 
     @ManyToOne(
         type => PacienteEntity,
