@@ -13,8 +13,23 @@ export class MedicamentoService {
 
     }
 
+
+    async buscarPorIdPacie(idPaciente: number):Promise <MedicamentoEntity[]>{
+        const medicamentoUsuario: FindManyOptions<MedicamentoEntity> =
+            { where: {
+                    paciente: idPaciente
+                }}
+        return await this._medicamentoRepository.find(medicamentoUsuario)
+    }
+
+
+
+
     //buscar
-    buscar(parametros?: FindManyOptions<MedicamentoEntity>): Promise<MedicamentoEntity[]> {
+    buscar( parametros?: FindManyOptions<MedicamentoEntity>): Promise<MedicamentoEntity[]> {
+
+
+
         return this._medicamentoRepository.find(parametros)
     }
 

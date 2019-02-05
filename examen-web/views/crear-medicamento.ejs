@@ -5,15 +5,20 @@
 <p><%= estaCreando ? 'Registre':'Actualice' %> un Medicamento</p>
 
 
-<form action="/medicamento/<%= estaCreando ? 'crear' : 'actualizar' %>-Medicamento/<%= estaCreando ? '' : medicamento.id %>"
+<form action="/medicamento/<%= estaCreando ? 'crear' : 'actualizar' %>-medicamento/<%=idPaciente%>/<%= estaCreando ? '' : medicamento.id %>"
       method="POST">
+
+
     <div>
         <label for="paciente"></label>
         <input id="paciente"
                type="text"
                name="paciente"
-               value="<%= estaCreando ? '' : paciente.id %>" hidden>
+               value="<%= estaCreando ? idPaciente : idPaciente%>"
+               hidden>
     </div>
+    <br>
+
     <div>
         <label for="gramosAIngerir">Gramos a ingerir:</label>
         <input id="gramosAIngerir"

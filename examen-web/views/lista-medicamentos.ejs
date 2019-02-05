@@ -13,15 +13,15 @@
 
 <h1>Lista de medicamentos</h1>
 
-<form action="/medicamento/medicamento" method="get">
+<form action="/medicamento/inicio/<%=idPaciente%>" method="get">
 
-    <label for="busqueda">Búsqueda</label>
-    <input id="busqueda" type="text" name="busqueda">
-
+    <label for="busquedaMedicamento">Búsqueda</label>
+    <input id="busquedaMedicamento" type="text" name="busquedaMedicamento">
     <button>Buscar</button>
+
 </form>
 
-<a href="/medicamento/crear-Medicamento">
+<a href="/medicamento/crear-Medicamento/<%=idPaciente%>">
     <button>Ingresar un nuevo medicamento</button>
 </a>
 
@@ -48,10 +48,10 @@
             <td><%= medicamentos.fechaCaducidad %></td>
             <td><%= medicamentos.numeroPastillas %></td>
             <td>
-                <form action="/medicamento/borrar/<%= medicamentos.id %>" method="POST">
+                <form action="/medicamento/borrar/<%=idPaciente%>/<%= medicamentos.id %>" method="POST">
                     <button type="submit"> Eliminar</button>
                 </form>
-                <a href="/medicamento/actualizar-Medicamento/<%= medicamentos.id %>">
+                <a href="/medicamento/actualizar-medicamento/<%=idPaciente%>/<%= medicamentos.id %>">
                     <button>Actualizar</button>
                 </a>
             </td>

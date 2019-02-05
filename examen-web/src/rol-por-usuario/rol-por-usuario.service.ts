@@ -2,6 +2,8 @@ import {Injectable} from "@nestjs/common";
 import {FindManyOptions, FindOneOptions, Repository} from "typeorm";
 import {RolPorUsuarioEntity} from "./rol-por-usuario.entity";
 import {InjectRepository} from "@nestjs/typeorm";
+import {UsuarioEntity} from "../usuario/usuario.entity";
+import {RolEntity} from "../rol/rol.entity";
 
 
 @Injectable()
@@ -27,6 +29,18 @@ export class RolPorUsuarioService {
         return await this._rolPorUsuarioRepository.findOne(consulta);
     }
 
+
+    async encontrarRol(idUsuario:number, idRol:number): Promise<RolPorUsuarioEntity[]>{
+        const consulta: FindManyOptions<RolPorUsuarioEntity> = {
+            where: {
+                usuario:idUsuario,
+                rol: idRol,
+            }
+        }
+        return await this._rolPorUsuarioRepository.find(consulta)
+    }
+
+
     async obtenerRoles(idUsuario: number): Promise<RolPorUsuarioEntity[]> {
 
         const consulta: FindManyOptions<RolPorUsuarioEntity> = {
@@ -51,15 +65,25 @@ export class RolPorUsuarioService {
         const consulta: FindOneOptions<RolPorUsuarioEntity> = {
             where: {
                 id: idRolPorUsuario,
-
             },
             relations:['usuario']
         };
         return await this._rolPorUsuarioRepository.findOne(consulta);
     }
 
+    async crear(rolPorUsuario: RolPorUsuario): Promise<RolPorUsuarioEntity>{
+
+        const rolPorUsuarioEntity = this._rolPorUsuarioRepository.create(rolPorUsuario);
+        const rolPorUsuarioCreado = await this._rolPorUsuarioRepository.save(rolPorUsuarioEntity);
+        return rolPorUsuarioCreado;
 
 
+    }
 
+}
 
+export interface RolPorUsuario{
+    id?:number;
+    rol:RolEntity;
+    usuario:UsuarioEntity;
 }
