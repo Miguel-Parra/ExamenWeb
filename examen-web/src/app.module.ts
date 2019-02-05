@@ -28,7 +28,7 @@ import {RolModule} from "./rol/rol.module";
       database: 'examenWeb',
       // BDD Ya existe -> synchronized: false
       synchronize: true,
-      dropSchema: false
+      dropSchema: true
         , //borra la base y se vuelve a crear, buena idea para pruebas pero no para produccion
       entities: [
         RolEntity, UsuarioEntity, MedicamentoEntity, PacienteEntity, RolPorUsuarioEntity, EventoEntity, EventoPorMedicamentoEntity
