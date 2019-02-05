@@ -1,8 +1,15 @@
 <% const estaCreando = typeof medicamento === "undefined"%>
 
+<% const existeMensaje = typeof mensaje !== "undefined"%>
+
+
 <h1> <%= estaCreando ? 'Registrar':'Actualizar' %> Medicamento</h1>
 
 <p><%= estaCreando ? 'Registre':'Actualice' %> un Medicamento</p>
+
+<% if (existeMensaje){%>
+<p>MENSAJE: <%=mensaje%></p>
+<%}%>
 
 
 <form action="/medicamento/<%= estaCreando ? 'crear' : 'actualizar' %>-medicamento/<%=idPaciente%>/<%= estaCreando ? '' : medicamento.id %>"
@@ -54,7 +61,8 @@
     <div>
         <label for="fechaCaducidad">Fecha de Caducidad:</label>
         <input id="fechaCaducidad"
-               type="text"
+               type="date"
+               max="05/02/2019"
                name="fechaCaducidad"
                value="<%= estaCreando ? '' : medicamento.fechaCaducidad %>">
     </div>
@@ -71,6 +79,6 @@
 
 </form>
 
-<a href="/medicamento/medicamento">
+<a href="/medicamento/inicio/<%=idPaciente%>">
     <button>Regresar</button>
 </a>

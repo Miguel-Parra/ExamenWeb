@@ -78,6 +78,6 @@ export interface Medicamento{
     nombreMedicamento: string;
     composicion: string;
     usadoPara: string;
-    fechaCaducidad: string;
-    numeroPastillas: string;
+    fechaCaducidad: Date;
+    numeroPastillas: number;
 }

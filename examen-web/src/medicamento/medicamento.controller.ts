@@ -1,17 +1,15 @@
-import {Body, Controller, Get, Param, Post, Query, Res} from "@nestjs/common";
+import {BadRequestException, Body, Controller, Get, Param, Post, Query, Res} from "@nestjs/common";
 import {Medicamento, MedicamentoService} from "./medicamento.service";
 import {FindManyOptions, Like,} from "typeorm";
 import {MedicamentoEntity} from "./medicamento.entity";
+import {medicamentoDto} from "./dto/medicamento.dto";
+import {validate, ValidationError} from "class-validator";
 
 @Controller('medicamento')
 
 export class MedicamentoController {
     constructor(private readonly _medicamentoService: MedicamentoService) {
     }
-
-
-
-
 
     @Get('inicio/:idPaciente')
     async mostrarMedicamento(
@@ -47,8 +45,6 @@ export class MedicamentoController {
         let medicamentoUsuario: MedicamentoEntity[];
 
 
-
-
         if (busquedaMedicamento) {
 
             const consulta: FindManyOptions<MedicamentoEntity> = {
@@ -62,7 +58,7 @@ export class MedicamentoController {
             };
             medicamentoUsuario = await this._medicamentoService.buscar(consulta);
             console.log(medicamentoUsuario)
-        }else {
+        } else {
 
             medicamentoUsuario = await this._medicamentoService.buscarPorIdPaciente(Number(idPaciente));
 
@@ -82,11 +78,20 @@ export class MedicamentoController {
     @Get('crear-medicamento/:idPaciente')
     crearMedicamento(
         @Res() response,
-        @Param('idPaciente') idPaciente:string
-
+        @Param('idPaciente') idPaciente: string,
+        @Query('error') error: string
     ) {
+        let mensaje = undefined;
+        if(error){
+            mensaje = "Datos erroneos";
+        }
+
         response.render(
-            'crear-medicamento',{idPaciente: idPaciente}
+            'crear-medicamento',
+            {
+                idPaciente: idPaciente,
+                mensaje: mensaje
+            }
         )
     }
 
@@ -95,13 +100,43 @@ export class MedicamentoController {
     async crearMedicamentoFuncion(
         @Res() response,
         @Body() medicamento: Medicamento,
-        @Param('idPaciente') idPaciente:string
+        @Param('idPaciente') idPaciente: string
     ) {
-        await this._medicamentoService.crear(medicamento);
 
-        const parametrosConsulta = `?accion=crear&nombre=${medicamento.nombreMedicamento}`;
+        let mensaje = undefined;
 
-        response.redirect('/medicamento/inicio/'+ idPaciente + parametrosConsulta)
+        const objetoValidacionMedicamento = new medicamentoDto();
+
+        medicamento.gramosAIngerir = Number(medicamento.gramosAIngerir)
+        objetoValidacionMedicamento.gramosAIngerir = medicamento.gramosAIngerir
+        objetoValidacionMedicamento.nombreMedicamento = medicamento.nombreMedicamento
+        objetoValidacionMedicamento.composicion = medicamento.composicion
+        objetoValidacionMedicamento.usadoPara = medicamento.usadoPara
+        const fec = new Date(medicamento.fechaCaducidad).toISOString();
+        objetoValidacionMedicamento.fechaCaducidad = fec
+
+        medicamento.numeroPastillas = Number(medicamento.numeroPastillas)
+        objetoValidacionMedicamento.numeroPastillas = medicamento.numeroPastillas
+
+        const errores: ValidationError[] =
+            await validate(objetoValidacionMedicamento);
+
+        const hayErrores = errores.length > 0;
+
+        if (hayErrores) {
+            console.error(errores);
+
+            const parametrosConsulta = `?error=${errores[0].constraints}`;
+
+            response.redirect('/medicamento/crear-medicamento/' + idPaciente + parametrosConsulta)
+        } else {
+
+            await this._medicamentoService.crear(medicamento);
+
+            const parametrosConsulta = `?accion=crear&nombre=${medicamento.nombreMedicamento}`;
+
+            response.redirect('/medicamento/inicio/' + idPaciente + parametrosConsulta)
+        }
     }
 
     //BORRAR USUARIO
@@ -119,7 +154,7 @@ export class MedicamentoController {
 
         const parametrosConsulta = `?accion=borrar&nombre=${medicamentoEncontrado.nombreMedicamento}`;
 
-        response.redirect('/medicamento/inicio/' +idPaciente+parametrosConsulta);
+        response.redirect('/medicamento/inicio/' + idPaciente + parametrosConsulta);
     }
 
     /////actualizar datos del usuario
@@ -136,7 +171,8 @@ export class MedicamentoController {
         response.render(
             'crear-Medicamento', {//ir a la pantalla de crear-usuario
                 medicamento: medicamentoActualizar,
-                idPaciente: idPaciente }
+                idPaciente: idPaciente
+            }
         )
     }
 
@@ -147,14 +183,50 @@ export class MedicamentoController {
         @Res() response,
         @Body() medicamento: Medicamento
     ) {
-        medicamento.id = +idMedicamento;
 
-        await this._medicamentoService.actualizar(+idMedicamento, medicamento);
+        let mensaje = undefined;
+        const objetoValidacionMedicamento = new medicamentoDto();
 
-        const parametrosConsulta = `?accion=actualizar&nombre=${medicamento.nombreMedicamento}`;
+        medicamento.gramosAIngerir = Number(medicamento.gramosAIngerir)
+        objetoValidacionMedicamento.gramosAIngerir = medicamento.gramosAIngerir
+        objetoValidacionMedicamento.nombreMedicamento = medicamento.nombreMedicamento
+        objetoValidacionMedicamento.composicion = medicamento.composicion
+        objetoValidacionMedicamento.usadoPara = medicamento.usadoPara
+        const fec = new Date(medicamento.fechaCaducidad).toISOString();
+        objetoValidacionMedicamento.fechaCaducidad = fec
 
-        response.redirect('/medicamento/inicio/' +idPaciente+ parametrosConsulta);
+        medicamento.numeroPastillas = Number(medicamento.numeroPastillas)
+        objetoValidacionMedicamento.numeroPastillas = medicamento.numeroPastillas
+
+        const errores: ValidationError[] =
+            await validate(objetoValidacionMedicamento);
+
+        const hayErrores = errores.length > 0;
+
+        if (hayErrores) {
+            console.error(errores);
+            // redirect crear noticia, Y
+            // En crear noticia deberian de mostrar mensajes
+            // (Como en la pantalla de INICIO)
+            throw new BadRequestException({mensaje: 'Error de validacion'})
+            /*response.render('actualizar-medicamento', {
+                idMedicamento:idMedicamento,
+                idPaciente: idPaciente,
+                mensaje: mensaje
+            })*/
+        } else {
+
+            medicamento.id = +idMedicamento;
+
+            await this._medicamentoService.actualizar(+idMedicamento, medicamento);
+
+            const parametrosConsulta = `?accion=actualizar&nombre=${medicamento.nombreMedicamento}`;
+
+
+            response.redirect('/medicamento/inicio/' + idPaciente + parametrosConsulta);
+
+        }
+
     }
-
 }
 
