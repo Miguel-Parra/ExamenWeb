@@ -1,6 +1,6 @@
 import {Body, Controller, Get, Param, Post, Query, Res} from "@nestjs/common";
 import {Medicamento, MedicamentoService} from "./medicamento.service";
-import {FindManyOptions, Like} from "typeorm";
+import {FindManyOptions, Like,} from "typeorm";
 import {MedicamentoEntity} from "./medicamento.entity";
 
 @Controller('medicamento')
@@ -23,6 +23,8 @@ export class MedicamentoController {
     ) {
         let mensaje = undefined;
 
+        console.log(busquedaMedicamento);
+
 
         if (accion && nombre) {
             switch (accion) {
@@ -41,9 +43,9 @@ export class MedicamentoController {
 
         let medicamentos: MedicamentoEntity[];
 
+
         let medicamentoUsuario: MedicamentoEntity[];
 
-        medicamentoUsuario = await this._medicamentoService.buscarPorIdPaciente(Number(idPaciente));
 
 
 
@@ -52,73 +54,62 @@ export class MedicamentoController {
             const consulta: FindManyOptions<MedicamentoEntity> = {
                 where: [
                     {
-                        gramosAIngerir: Like(`%${busquedaMedicamento}%`)
-                    },
-                    {
+                        //paciente: idPaciente,
                         nombreMedicamento: Like(`%${busquedaMedicamento}%`)
-                    },
-                    {
-                        composicion: Like(`%${busquedaMedicamento}%`)
-                    },
-                    {
-                        usadoPara: Like(`%${busquedaMedicamento}%`)
-                    },
-                    {
-                        fechaCaducidad: Like(`%${busquedaMedicamento}%`)
-                    },
-                    {
-                        numeroPastillas: Like(`%${busquedaMedicamento}%`)
-                    },
+                    }
+
                 ]
             };
+            medicamentoUsuario = await this._medicamentoService.buscar(consulta);
+            console.log(medicamentoUsuario)
+        }else {
 
-            medicamentos = await this._medicamentoService.buscar(consulta);
-        }
-        else {
-            medicamentos = await this._medicamentoService.buscar();
+            medicamentoUsuario = await this._medicamentoService.buscarPorIdPaciente(Number(idPaciente));
+
         }
 
         response.render('lista-medicamentos',
             {
                 arregloMedicamentos: medicamentoUsuario,
-                mensaje: mensaje
-            })
+                mensaje: mensaje,
+                idPaciente: idPaciente
+            }
+        )
     }
 
 
-
-
-
-
-
     //se inicializa la pantalla de crear medicamento
-    @Get('crear-Medicamento')
+    @Get('crear-medicamento/:idPaciente')
     crearMedicamento(
-        @Res() response
+        @Res() response,
+        @Param('idPaciente') idPaciente:string
+
     ) {
         response.render(
-            'crear-Medicamento'
+            'crear-medicamento',{idPaciente: idPaciente}
         )
     }
 
 //CREAR USUARIO Y GUARDAR EN LA BASE DE DATOS
-    @Post('crear-Medicamento')
+    @Post('crear-medicamento/:idPaciente')
     async crearMedicamentoFuncion(
         @Res() response,
-        @Body() medicamento: Medicamento
+        @Body() medicamento: Medicamento,
+        @Param('idPaciente') idPaciente:string
     ) {
         await this._medicamentoService.crear(medicamento);
 
         const parametrosConsulta = `?accion=crear&nombre=${medicamento.nombreMedicamento}`;
 
-        response.redirect('/medicamento/medicamento' + parametrosConsulta)
+        response.redirect('/medicamento/inicio/'+ idPaciente + parametrosConsulta)
     }
 
     //BORRAR USUARIO
 
-    @Post('borrar/:idMedicamento')
+    @Post('borrar/:idPaciente/:idMedicamento/')
     async borrar(
         @Param('idMedicamento') idMedicamento: string,
+        @Param('idPaciente') idPaciente: string,
         @Res() response
     ) {
         const medicamentoEncontrado = await this._medicamentoService
@@ -128,14 +119,15 @@ export class MedicamentoController {
 
         const parametrosConsulta = `?accion=borrar&nombre=${medicamentoEncontrado.nombreMedicamento}`;
 
-        response.redirect('/medicamento/medicamento' + parametrosConsulta);
+        response.redirect('/medicamento/inicio/' +idPaciente+parametrosConsulta);
     }
 
     /////actualizar datos del usuario
 
-    @Get('actualizar-Medicamento/:idMedicamento')
+    @Get('actualizar-medicamento/:idPaciente/:idMedicamento')
     async actualizarMedicamento(
         @Param('idMedicamento') idMedicamento: string,
+        @Param('idPaciente') idPaciente: string,
         @Res() response
     ) {
         const medicamentoActualizar = await this._medicamentoService
@@ -143,14 +135,15 @@ export class MedicamentoController {
 
         response.render(
             'crear-Medicamento', {//ir a la pantalla de crear-usuario
-                medicamento: medicamentoActualizar
-            }
+                medicamento: medicamentoActualizar,
+                idPaciente: idPaciente }
         )
     }
 
-    @Post('actualizar-Medicamento/:idMedicamento')
+    @Post('actualizar-medicamento/:idPaciente/:idMedicamento')
     async actualizarMedicamentoFormulario(
         @Param('idMedicamento') idMedicamento: string,
+        @Param('idPaciente') idPaciente: string,
         @Res() response,
         @Body() medicamento: Medicamento
     ) {
@@ -160,7 +153,7 @@ export class MedicamentoController {
 
         const parametrosConsulta = `?accion=actualizar&nombre=${medicamento.nombreMedicamento}`;
 
-        response.redirect('/medicamento/medicamento' + parametrosConsulta);
+        response.redirect('/medicamento/inicio/' +idPaciente+ parametrosConsulta);
     }
 
 }
