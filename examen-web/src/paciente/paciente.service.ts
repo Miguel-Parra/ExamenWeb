@@ -9,7 +9,8 @@ import {UsuarioEntity} from "../usuario/usuario.entity";
 export class PacienteService {
     constructor (
         @InjectRepository(PacienteEntity)
-            private readonly _pacienteRepository: Repository<PacienteEntity>){
+            private readonly _pacienteRepository: Repository<PacienteEntity>)
+    {
 
     }
 

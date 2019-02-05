@@ -17,17 +17,17 @@
 
 
 
-        <table><caption>USUARIO</caption>
-            <tr>
-                <td><%= usuario.nombre %></td>
-            </tr>
-            <tr>
-                <td><%= usuario.correo %></td>
-            </tr>
-            <tr>
-                <td><%= usuario.fechaNacimiento %></td>
-            </tr>
-        </table>
+<table><caption>USUARIO</caption>
+    <tr>
+        <td><%= usuario.nombre %></td>
+    </tr>
+    <tr>
+        <td><%= usuario.correo %></td>
+    </tr>
+    <tr>
+        <td><%= usuario.fechaNacimiento %></td>
+    </tr>
+</table>
 
 
 <table>
@@ -45,7 +45,22 @@
 
 
 </table>
+<br>
 
+<form action="/rol-por-usuario/asignar-rol/<%=usuario.id%>" method="POST">
+    <div>
+        <label for="rol"></label>
+        <select name="rol" id="rol">
+            <% rol.forEach( (rolLista)=> { %>
+            <option value="<%=rolLista.id%>">
+
+                <%=rolLista.nombreRol%></option>
+            <% }) %>
+        </select>
+    </div>
+    <br>
+    <button>Agregar rol</button>
+</form>
 
 
 
