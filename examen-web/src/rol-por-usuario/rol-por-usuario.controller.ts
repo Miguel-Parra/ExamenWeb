@@ -57,7 +57,7 @@ export class RolPorUsuarioController {
     ) {
         const rolUsuarioEncontrado = await this._rolPorUsuarioService
             .buscarPorId(+idRolUsuario);
-        console.log("sddddddddddddddddddddddddddddddddddddd"+ stringify(rolUsuarioEncontrado))
+        //console.log("sddddddddddddddddddddddddddddddddddddd"+ stringify(rolUsuarioEncontrado))
 
         await this._rolPorUsuarioService.borrar(Number(idRolUsuario));
 
