@@ -19,84 +19,94 @@ export class PacienteController {
         @Query('busqueda') busqueda: string,
         @Session() sesion
     ) {
+
         console.log(sesion.rol)
 
         if(sesion.rol==='usuario') {
-    let mensaje = undefined;
-    console.log(sesion)
+            let mensaje = undefined;
+            console.log(sesion)
 
-    if (accion && nombre) {
-    switch (accion) {
-    case 'actualizar':
-        mensaje = `Registro ${nombre} actualizado`;
-        break;
-    case 'borrar':
-        mensaje = `Registro ${nombre} eliminado`;
-        break;
-    case 'crear':
-        mensaje = `Registro ${nombre} creado`;
-        break;
+            if (accion && nombre) {
+                switch (accion) {
+                    case 'actualizar':
+                        mensaje = `Registro ${nombre} actualizado`;
+                        break;
+                    case 'borrar':
+                        mensaje = `Registro ${nombre} eliminado`;
+                        break;
+                    case 'crear':
+                        mensaje = `Registro ${nombre} creado`;
+                        break;
+                }
+            }
+
+            let pacientes: PacienteEntity[];
+
+            if (busqueda) {
+
+                const consulta: FindManyOptions<PacienteEntity> = {
+                    where: [
+                        {
+                            nombres: Like(`%${busqueda}%`)
+                        },
+                        {
+                            apellidos: Like(`%${busqueda}%`)
+                        },
+                        {
+                            fechaNacimiento: Like(`%${busqueda}%`)
+                        },
+                        {
+                            hijos: Like(`%${busqueda}%`)
+                        },
+                        {
+                            tieneSeguro: Like(`%${busqueda}%`)
+                        },
+                    ]
+                };
+
+                pacientes = await this._pacienteService.buscar(consulta);
+            } else {
+
+                const consulta: FindManyOptions<PacienteEntity> = {
+                    where: [{usuario: sesion.idUsuario}]
+                }
+                pacientes = await this._pacienteService.buscar(consulta);
+            }
+
+            response.render('lista-pacientes',
+                {
+                    arregloPaciente: pacientes,
+                    mensaje: mensaje,
+
+                })
+        }else{
+            throw new BadRequestException({mensaje: "No tiene acceso a esta vista"});
+        }
     }
-}
-
-let pacientes: PacienteEntity[];
-
-if (busqueda) {
-
-    const consulta: FindManyOptions<PacienteEntity> = {
-        where: [
-            {
-                nombres: Like(`%${busqueda}%`)
-            },
-            {
-                apellidos: Like(`%${busqueda}%`)
-            },
-            {
-                fechaNacimiento: Like(`%${busqueda}%`)
-            },
-            {
-                hijos: Like(`%${busqueda}%`)
-            },
-            {
-                tieneSeguro: Like(`%${busqueda}%`)
-            },
-        ]
-    };
-
-    pacientes = await this._pacienteService.buscar(consulta);
-} else {
-
-    const consulta: FindManyOptions<PacienteEntity> = {
-        where: [{usuario: sesion.idUsuario}]
-    }
-    pacientes = await this._pacienteService.buscar(consulta);
-}
-
-response.render('lista-pacientes',
-    {
-        arregloPaciente: pacientes,
-        mensaje: mensaje,
-
-    })
-}else{
-    throw new BadRequestException({mensaje: "No tiene acceso a esta vista"});
-}
-}
 
 //se inicializa la pantalla de crear usuario
     @Get('crear-Paciente')
     crearPaciente(
         @Res() response,
-        @Session() sesion
+        @Session() sesion,
+        @Query('error') error: string
     ) {
+        let mensaje = undefined;
+
+        if(error){
+            mensaje = "Datos erroneos";
+        }
+
         if(sesion.rol === 'usuario'){
-        response.render(
-            'crear-Paciente'
-        )
-    }else{
-        response.redirect(
-            '/login'
-        )}
+            response.render(
+                'crear-Paciente',{
+                    mensaje:mensaje
+                }
+            )
+        }else{
+            response.redirect(
+                '/login'
+            )}
     }
 
 //CREAR USUARIO Y GUARDAR EN LA BASE DE DATOS
@@ -106,27 +116,43 @@ response.render('lista-pacientes',
         @Body() paciente: Paciente,
         @Session() sesion
     ) {
+
+        let mensaje = undefined;
+
         const objetoValidacionPaciente = new CreatePacienteDto();
+
         objetoValidacionPaciente.nombres = paciente.nombres
         objetoValidacionPaciente.apellidos= paciente.apellidos
-        objetoValidacionPaciente.fecha_nacimiento= paciente.fechaNacimiento
+
+        const fec = new Date(paciente.fechaNacimiento).toISOString();
+        objetoValidacionPaciente.fecha_nacimiento = fec
+
+        paciente.hijos = Number(paciente.hijos)
         objetoValidacionPaciente.hijos= paciente.hijos
+
+
         objetoValidacionPaciente.tieneSeguro=paciente.tieneSeguro
 
-        const errores: ValidationError[]= await validate(objetoValidacionPaciente) // Me devuelve un arreglo de validacion de errores
+
+        const errores: ValidationError[]=
+            await validate(objetoValidacionPaciente) // Me devuelve un arreglo de validacion de errores
 
         const hayErrores = errores.length>0;
+
         if(hayErrores){
             console.error(errores)
-            throw new BadRequestException({mensaje: 'error de validacion'})
+
+            const parametrosConsulta = `?error=${errores[0].constraints}`;
+
+            response.redirect('/paciente/crear-Paciente/' + parametrosConsulta)
         }else{
-        paciente.usuario=sesion.idUsuario;
-        await this._pacienteService.crear(paciente);
+            paciente.usuario=sesion.idUsuario;
+            await this._pacienteService.crear(paciente);
 
-        const parametrosConsulta = `?accion=crear&nombre=${paciente.nombres}`;
+            const parametrosConsulta = `?accion=crear&nombre=${paciente.nombres}`;
 
-        response.redirect('/paciente/paciente' + parametrosConsulta)
-    }}
+            response.redirect('/paciente/paciente' + parametrosConsulta)
+        }}
 
 
 //BORRAR USUARIO
@@ -152,14 +178,23 @@ response.render('lista-pacientes',
     @Get('actualizar-Paciente/:idPaciente')
     async actualizarPaciente(
         @Param('idPaciente') idPaciente: string,
-        @Res() response
+        @Res() response,
+        @Query('error') error: string
     ) {
+
+        let mensaje = undefined;
+
+        if(error){
+            mensaje = "Datos erroneos";
+        }
+
         const usuarioActualizar = await this._pacienteService
             .buscarPorId(Number(idPaciente));
 
         response.render(
             'crear-Paciente', {//ir a la pantalla de crear-usuario
-                paciente: usuarioActualizar
+                paciente: usuarioActualizar,
+                mensaje: mensaje
             }
         )
     }
@@ -170,15 +205,42 @@ response.render('lista-pacientes',
         @Res() response,
         @Body() paciente: Paciente
     ) {
-        paciente.id = +idPaciente;
+        let mensaje = undefined;
 
-        await this._pacienteService.actualizar(+idPaciente, paciente);
+        const objetoValidacionPaciente = new CreatePacienteDto();
 
-        const parametrosConsulta = `?accion=actualizar&nombre=${paciente.nombres}`;
+        objetoValidacionPaciente.nombres = paciente.nombres
+        objetoValidacionPaciente.apellidos = paciente.apellidos
 
-        response.redirect('/paciente/paciente' + parametrosConsulta);
+        const fec = new Date(paciente.fechaNacimiento).toISOString();
+        objetoValidacionPaciente.fecha_nacimiento = fec
+
+        paciente.hijos = Number(paciente.hijos)
+        objetoValidacionPaciente.hijos = paciente.hijos
+
+
+        objetoValidacionPaciente.tieneSeguro = paciente.tieneSeguro
+
+        const errores: ValidationError[] = await validate(objetoValidacionPaciente) // Me devuelve un arreglo de validacion de errores
+
+        const hayErrores = errores.length > 0;
+
+        if (hayErrores) {
+            console.error(errores)
+
+            const parametrosConsulta = `?error=${errores[0].constraints}`;
+
+            response.redirect('/paciente/actualizar-Paciente/' + parametrosConsulta)
+        } else {
+            paciente.id = +idPaciente;
+
+            await this._pacienteService.actualizar(+idPaciente, paciente);
+
+            const parametrosConsulta = `?accion=actualizar&nombre=${paciente.nombres}`;
+
+            response.redirect('/paciente/paciente' + parametrosConsulta);
+        }
+
     }
-
-
 }
 

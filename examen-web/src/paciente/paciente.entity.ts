@@ -23,10 +23,9 @@ export class PacienteEntity{
 
     @Column({
         name: "fecha_nacimiento",
-        type: "varchar",
-        length: 15
+        type: "date"
     })
-    fechaNacimiento: string;
+    fechaNacimiento: Date;
 
     @Column({
         name: "hijos",
@@ -36,7 +35,7 @@ export class PacienteEntity{
 
     @Column({
         name: "tiene_seguro",
-        type: "varchar",
+        type: "boolean",
     })
     tieneSeguro: boolean;
 
