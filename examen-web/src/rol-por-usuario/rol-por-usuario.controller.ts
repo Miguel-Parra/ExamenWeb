@@ -6,7 +6,7 @@ import {UsuarioService} from "../usuario/usuario.service";
 import {RolEntity} from "../rol/rol.entity";
 import {RolService} from "../rol/rol.service";
 import {RolPorUsuarioModule} from "./rol-por-usuario.module";
-import {map} from "rxjs/operators";
+
 
 @Controller('rol-por-usuario')
 
@@ -24,23 +24,28 @@ export class RolPorUsuarioController {
         @Query('notificacion') notificacion,
         @Session() sesion
     ){
-        let mensajeRepetido= undefined
-        let usuarioRoles: RolPorUsuarioEntity[];
-        let roles: RolEntity[];
+        if(sesion.rol==='administrador') {
 
-        if(notificacion){
-            mensajeRepetido=`El rol ${notificacion} ya se encuentra asignado a este usuario`
+            let mensajeRepetido = undefined
+            let usuarioRoles: RolPorUsuarioEntity[];
+            let roles: RolEntity[];
+
+            if (notificacion) {
+                mensajeRepetido = `El rol ${notificacion} ya se encuentra asignado a este usuario`
+            }
+            const usuarioActualizar = await this._usuarioService.buscarPorId(+idUsuario)
+            usuarioRoles = await this._rolPorUsuarioService.obtenerRoles(+idUsuario)
+            roles = await this._rolService.obtenerRol()
+            response.render('asignar-roles',
+                {
+                    usuario: usuarioActualizar,
+                    rolUsuario: usuarioRoles,
+                    rol: roles,
+                    mensajeRol: mensajeRepetido,
+                })
+        }else{
+            response.redirect('/login')
         }
-        const usuarioActualizar = await this._usuarioService.buscarPorId(+idUsuario)
-        usuarioRoles = await this._rolPorUsuarioService.obtenerRoles(+idUsuario)
-        roles= await this._rolService.obtenerRol()
-        response.render('asignar-roles',
-            {
-                usuario: usuarioActualizar,
-                rolUsuario: usuarioRoles,
-                rol:roles,
-                mensajeRol: mensajeRepetido
-            })
 
     }
 
@@ -68,17 +73,20 @@ export class RolPorUsuarioController {
         @Param('idUsuario') idUsuario,
         @Body() rolPorUsuario:RolPorUsuario,
     ){
-        console.log("aqui esta el dato del rol seleccionado"+rolPorUsuario.rol)
 
+        let usuarioRoles: RolPorUsuarioEntity;
+        usuarioRoles = await this._rolPorUsuarioService.encontrarRol(+idUsuario, +rolPorUsuario.rol)
 
+        if(usuarioRoles){
+            const parametrosConsulta = `?notificacion=${usuarioRoles.rol.nombreRol}`;
+            response.redirect('/rol-por-usuario/asignar-rol/'+idUsuario+parametrosConsulta)
+        }else{
 
-
-        rolPorUsuario.usuario = idUsuario,
-            await this._rolPorUsuarioService.crear(rolPorUsuario)
-        const parametrosConsulta = `?accion=crear&nombre=${idUsuario}`;
-
-        response.redirect('/rol-por-usuario/asignar-rol/'+idUsuario + parametrosConsulta)
-    }}
+            rolPorUsuario.usuario = idUsuario,
+                await this._rolPorUsuarioService.crear(rolPorUsuario)
+            //const parametrosConsulta = `?accion=crear&nombre=${rolPorUsuario.rol}`;
+            response.redirect('/rol-por-usuario/asignar-rol/'+idUsuario)
+        }}}
 
 
 

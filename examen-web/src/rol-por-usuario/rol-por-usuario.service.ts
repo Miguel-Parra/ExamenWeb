@@ -30,14 +30,17 @@ export class RolPorUsuarioService {
     }
 
 
-    async encontrarRol(idUsuario:number, idRol:number): Promise<RolPorUsuarioEntity[]>{
-        const consulta: FindManyOptions<RolPorUsuarioEntity> = {
+    async encontrarRol(idUsuario:number, idRol:number): Promise<RolPorUsuarioEntity> {
+        const consulta: FindOneOptions<RolPorUsuarioEntity> = {
             where: {
                 usuario:idUsuario,
                 rol: idRol,
-            }
-        }
-        return await this._rolPorUsuarioRepository.find(consulta)
+            },
+            relations:['rol']
+        };
+
+        return await this._rolPorUsuarioRepository.findOne(consulta)
+
     }
 
 
@@ -65,6 +68,7 @@ export class RolPorUsuarioService {
         const consulta: FindOneOptions<RolPorUsuarioEntity> = {
             where: {
                 id: idRolPorUsuario,
+
             },
             relations:['usuario']
         };
