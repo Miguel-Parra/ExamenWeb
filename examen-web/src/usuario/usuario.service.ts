@@ -43,11 +43,11 @@ export class UsuarioService {
     }
 
     async autenticar(username: string, password: string): Promise<UsuarioEntity> {
-        const consulta: FindOneOptions<UsuarioEntity> = {
+        const consulta: FindManyOptions<UsuarioEntity> = {
             where: {
                 nombre: username,
                 password: password
-            }
+            },
         };
 
         return await this._usuarioRepository.findOne(consulta)
