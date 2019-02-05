@@ -31,10 +31,9 @@ export class UsuarioEntity {
 
     @Column({
         name: "fecha_nacimiento",
-        type: "varchar",
-        length: 30
+        type: "date"
     })
-    fechaNacimiento: string
+    fechaNacimiento: Date
 
 @OneToMany(
     type => RolPorUsuarioEntity,

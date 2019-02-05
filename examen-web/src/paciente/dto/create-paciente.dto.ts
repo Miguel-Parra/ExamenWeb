@@ -1,6 +1,6 @@
 import {
     IsAlpha,
-    IsBoolean,
+    IsBoolean, IsBooleanString,
     IsDate,
     IsDateString,
     IsInt,
@@ -8,17 +8,17 @@ import {
     IsNumber,
     IsString, Matches,
     Max,
-    Min
+    Min, MinDate
 } from "class-validator";
 
 export class CreatePacienteDto{
 
     @IsNotEmpty()
-    @Matches(/^[a-zA-Z\\s]*$/)
+    @IsAlpha()
     nombres:string;
 
     @IsNotEmpty()
-    @Matches(/^[a-zA-Z\\s]*$/)
+    @IsAlpha()
     apellidos:string;
 
     @IsDateString()
@@ -29,6 +29,7 @@ export class CreatePacienteDto{
     @IsNotEmpty()
     @IsInt()
     @Min(0)
+    @Max(15)
     hijos: number;
 
     @IsNotEmpty()
