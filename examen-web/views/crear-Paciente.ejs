@@ -34,6 +34,8 @@
         <label for="fechaNacimiento">Fecha de Nacimiento:</label>
         <input id="fechaNacimiento"
                type="date"
+               min="1900-01-01"
+               max="2019-02-08"
                name="fechaNacimiento"
                value="<%= estaCreando ? '' : paciente.fechaNacimiento %>">
     </div>
@@ -42,6 +44,8 @@
         <label for="hijos">Hijos:</label>
         <input id="hijos"
                type="number"
+               min="0"
+               max="15"
                name="hijos"
                value="<%= estaCreando ? '' : paciente.hijos %>">
     </div>
@@ -52,6 +56,10 @@
                type="text"
                name="tieneSeguro"
                value="<%= estaCreando ? '' : paciente.tieneSeguro %>">
+        <select name="tieneSeguro" id="tieneSeguro">
+            <option value="0">No</option>
+            <option value="1">Si</option>
+        </select>
     </div>
 
 

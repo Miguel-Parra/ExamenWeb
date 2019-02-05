@@ -131,7 +131,9 @@ export class PacienteController {
         objetoValidacionPaciente.hijos= paciente.hijos
 
 
-        objetoValidacionPaciente.tieneSeguro=paciente.tieneSeguro
+        paciente.tieneSeguro=Boolean(Number(paciente.tieneSeguro));
+        objetoValidacionPaciente.tieneSeguro = paciente.tieneSeguro;
+
 
 
         const errores: ValidationError[]=
@@ -230,7 +232,7 @@ export class PacienteController {
 
             const parametrosConsulta = `?error=${errores[0].constraints}`;
 
-            response.redirect('/paciente/actualizar-Paciente/' + parametrosConsulta)
+            response.redirect('/paciente/actualizar-Paciente/:'+idPaciente + parametrosConsulta)
         } else {
             paciente.id = +idPaciente;
 
