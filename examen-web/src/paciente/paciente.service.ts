@@ -50,7 +50,7 @@ export interface Paciente{
     id?:number;
     nombres:string;
     apellidos:string;
-    fechaNacimiento:string;
+    fechaNacimiento:Date;
     hijos: number;
     tieneSeguro: boolean;
     usuario:UsuarioEntity;

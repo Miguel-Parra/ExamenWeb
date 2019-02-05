@@ -82,6 +82,7 @@ export class MedicamentoController {
         @Query('error') error: string
     ) {
         let mensaje = undefined;
+
         if(error){
             mensaje = "Datos erroneos";
         }
@@ -163,15 +164,24 @@ export class MedicamentoController {
     async actualizarMedicamento(
         @Param('idMedicamento') idMedicamento: string,
         @Param('idPaciente') idPaciente: string,
-        @Res() response
+        @Res() response,
+        @Query('error') error: string
     ) {
+        let mensaje = undefined;
+
+        if(error){
+            mensaje = "Datos erroneos";
+        }
+
         const medicamentoActualizar = await this._medicamentoService
             .buscarPorId(Number(idMedicamento));
 
         response.render(
-            'crear-Medicamento', {//ir a la pantalla de crear-usuario
+            'crear-medicamento', {//ir a la pantalla de crear-usuario
                 medicamento: medicamentoActualizar,
-                idPaciente: idPaciente
+                idPaciente: idPaciente,
+                idMedicamento: idMedicamento,
+                mensaje: mensaje
             }
         )
     }
@@ -185,6 +195,7 @@ export class MedicamentoController {
     ) {
 
         let mensaje = undefined;
+
         const objetoValidacionMedicamento = new medicamentoDto();
 
         medicamento.gramosAIngerir = Number(medicamento.gramosAIngerir)
@@ -205,15 +216,11 @@ export class MedicamentoController {
 
         if (hayErrores) {
             console.error(errores);
-            // redirect crear noticia, Y
-            // En crear noticia deberian de mostrar mensajes
-            // (Como en la pantalla de INICIO)
-            throw new BadRequestException({mensaje: 'Error de validacion'})
-            /*response.render('actualizar-medicamento', {
-                idMedicamento:idMedicamento,
-                idPaciente: idPaciente,
-                mensaje: mensaje
-            })*/
+
+            const parametrosConsulta = `?error=${errores[0].constraints}`;
+
+            response.redirect('/medicamento/actualizar-medicamento/' + idPaciente + idMedicamento +  parametrosConsulta)
+
         } else {
 
             medicamento.id = +idMedicamento;

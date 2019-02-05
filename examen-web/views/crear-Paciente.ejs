@@ -1,8 +1,15 @@
 <% const estaCreando = typeof paciente === "undefined"%>
 
+<% const existeMensaje = typeof mensaje !== "undefined"%>
+
 <h1> <%= estaCreando ? 'Registrar':'Actualizar' %> Paciente</h1>
 
 <p><%= estaCreando ? 'Registre':'Actualice' %> un Paciente</p>
+
+<% if (existeMensaje){%>
+<p>MENSAJE: <%=mensaje%></p>
+<%}%>
+
 
 <form action="/paciente/<%= estaCreando ? 'crear' : 'actualizar' %>-Paciente/<%= estaCreando ? '' : paciente.id %>"
       method="POST">
@@ -26,7 +33,7 @@
     <div>
         <label for="fechaNacimiento">Fecha de Nacimiento:</label>
         <input id="fechaNacimiento"
-               type="text"
+               type="date"
                name="fechaNacimiento"
                value="<%= estaCreando ? '' : paciente.fechaNacimiento %>">
     </div>

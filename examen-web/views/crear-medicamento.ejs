@@ -62,7 +62,7 @@
         <label for="fechaCaducidad">Fecha de Caducidad:</label>
         <input id="fechaCaducidad"
                type="date"
-               max="05/02/2019"
+               max="2019-02-05"
                name="fechaCaducidad"
                value="<%= estaCreando ? '' : medicamento.fechaCaducidad %>">
     </div>
@@ -70,7 +70,7 @@
     <div>
         <label for="numeroPastillas">Número de Pastillas:</label>
         <input id="numeroPastillas"
-               type="text"
+               type="boolean"
                name="numeroPastillas"
                value="<%= estaCreando ? '' : medicamento.numeroPastillas %>">
     </div>

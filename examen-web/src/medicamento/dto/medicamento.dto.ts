@@ -24,6 +24,6 @@ export class medicamentoDto{
 
     @IsNotEmpty()
     @IsNumber()
-    numeroPastillas:number
+    numeroPastillas:number;
 
 }
