@@ -110,9 +110,11 @@ export class MedicamentoController {
 
         medicamento.gramosAIngerir = Number(medicamento.gramosAIngerir)
         objetoValidacionMedicamento.gramosAIngerir = medicamento.gramosAIngerir
+
         objetoValidacionMedicamento.nombreMedicamento = medicamento.nombreMedicamento
         objetoValidacionMedicamento.composicion = medicamento.composicion
         objetoValidacionMedicamento.usadoPara = medicamento.usadoPara
+
         const fec = new Date(medicamento.fechaCaducidad).toISOString();
         objetoValidacionMedicamento.fechaCaducidad = fec
 
@@ -219,7 +221,7 @@ export class MedicamentoController {
 
             const parametrosConsulta = `?error=${errores[0].constraints}`;
 
-            response.redirect('/medicamento/actualizar-medicamento/' + idPaciente + idMedicamento +  parametrosConsulta)
+            response.redirect('/medicamento/actualizar-medicamento/' + idPaciente +"/"+ idMedicamento +  parametrosConsulta)
 
         } else {
 

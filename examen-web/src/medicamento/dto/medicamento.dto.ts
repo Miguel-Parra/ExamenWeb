@@ -1,4 +1,4 @@
-import {IsDateString, IsNotEmpty, IsNumber, IsString} from "class-validator";
+import {IsAlpha, IsDateString, IsNotEmpty, IsNumber, IsString} from "class-validator";
 
 export class medicamentoDto{
 
@@ -7,15 +7,15 @@ export class medicamentoDto{
     gramosAIngerir:number;
 
     @IsNotEmpty()
-    @IsString()
+    @IsAlpha()
     nombreMedicamento:string;
 
     @IsNotEmpty()
-    @IsString()
+    @IsAlpha()
     composicion:string;
 
     @IsNotEmpty()
-    @IsString()
+    @IsAlpha()
     usadoPara:string;
 
     @IsDateString()

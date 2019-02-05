@@ -232,7 +232,7 @@ export class PacienteController {
 
             const parametrosConsulta = `?error=${errores[0].constraints}`;
 
-            response.redirect('/paciente/actualizar-Paciente/:'+idPaciente + parametrosConsulta)
+            response.redirect('/paciente/actualizar-Paciente/'+idPaciente + parametrosConsulta)
         } else {
             paciente.id = +idPaciente;
 

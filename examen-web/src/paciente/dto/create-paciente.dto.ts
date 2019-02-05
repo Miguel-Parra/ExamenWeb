@@ -33,6 +33,6 @@ export class CreatePacienteDto{
     hijos: number;
 
     @IsNotEmpty()
-    @IsBooleanString()
+    @IsBoolean()
     tieneSeguro: boolean;
 }

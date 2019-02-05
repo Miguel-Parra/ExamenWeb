@@ -31,7 +31,8 @@
         <input id="gramosAIngerir"
                type="text"
                name="gramosAIngerir"
-               value="<%= estaCreando ? '' : medicamento.gramosAIngerir %>">
+               value="<%= estaCreando ? '' : medicamento.gramosAIngerir %>"
+               required>
     </div>
     <br>
     <div>
@@ -39,7 +40,8 @@
         <input id="nombreMedicamento"
                type="text"
                name="nombreMedicamento"
-               value="<%= estaCreando ? '' : medicamento.nombreMedicamento %>">
+               value="<%= estaCreando ? '' : medicamento.nombreMedicamento %>"
+               required>
     </div>
     <br>
     <div>
@@ -47,7 +49,8 @@
         <input id="composicion"
                type="text"
                name="composicion"
-               value="<%= estaCreando ? '' : medicamento.composicion %>">
+               value="<%= estaCreando ? '' : medicamento.composicion %>"
+               required>
     </div>
     <br>
     <div>
@@ -55,24 +58,28 @@
         <input id="usadoPara"
                type="text"
                name="usadoPara"
-               value="<%= estaCreando ? '' : medicamento.usadoPara %>">
+               value="<%= estaCreando ? '' : medicamento.usadoPara %>"
+               required>
     </div>
     <br>
     <div>
         <label for="fechaCaducidad">Fecha de Caducidad:</label>
         <input id="fechaCaducidad"
                type="date"
-               max="2019-02-05"
+               min="2019-02-08"
+               max="2028-01-01"
                name="fechaCaducidad"
-               value="<%= estaCreando ? '' : medicamento.fechaCaducidad %>">
+               value="<%= estaCreando ? '' : medicamento.fechaCaducidad %>"
+               required>
     </div>
     <br>
     <div>
         <label for="numeroPastillas">Número de Pastillas:</label>
         <input id="numeroPastillas"
-               type="boolean"
+               type="number"
                name="numeroPastillas"
-               value="<%= estaCreando ? '' : medicamento.numeroPastillas %>">
+               value="<%= estaCreando ? '' : medicamento.numeroPastillas %>"
+               required>
     </div>
     <br>
     <button><%= estaCreando ? 'Crear' : 'Actualizar' %> medicamento</button>
