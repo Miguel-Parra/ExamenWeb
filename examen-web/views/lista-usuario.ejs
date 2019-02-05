@@ -1,53 +1,81 @@
 <% const existeMensaje = typeof mensaje !== "undefined"%>
 
-<style>
-    table, th, td {
-        border: 1px solid black;
-        border-collapse: collapse;
-    }
-</style>
+<%- include('header'); %>
 
 <% if (existeMensaje){%>
 <p>MENSAJE: <%=mensaje%></p>
 <%}%>
 
-<h1>Lista de usuarios</h1>
+<div class="container">
 
-<form action="/usuario/inicio" method="get">
+    <h1>Lista de usuarios</h1>
 
-    <label for="busqueda">Búsqueda</label>
-    <input id="busqueda" type="text" name="busqueda">
+    <form action="/usuario/inicio" method="get">
+        <div class="row">
+            <div class="col-sm-9">
+                <div class="form-group">
+                    <label for="busqueda">Búsqueda</label>
+                    <input id="busqueda" type="text" name="busqueda" class="form-control">
 
-    <button>Buscar</button>
-</form>
+                </div>
+
+            </div>
+            <div class="col-sm-3">
+
+                <button
+                        class="btn btn-outline-success btn-block espaciado-busqueda">
+
+                    Buscar
+
+                </button>
+
+            </div>
+        </div>
+    </form>
 
 
+    <div class="scroll-tabla">
 
-<table>
-    <!-- tr -> table row -->
-    <tr>
-        <!-- th -> table header -->
-        <th>Nombre</th>
-        <th>Correo</th>
-        <th>Fecha de Nacimiento</th>
-        <th>Acciones</th>
-    </tr>
-    <!-- tr -> table row -->
-    <% arregloUsuario.forEach( (usuario)=> { %>
-        <tr>
-            <!-- td -> table detail -->
-            <td><%= usuario.nombre %></td>
-            <td><%= usuario.correo %></td>
-            <td><%= usuario.fechaNacimiento %></td>
-            <td>
-                <a href="/rol-por-usuario/asignar-rol/<%= usuario.id %>">
-                    <button>Actualizar</button>
-                </a>
-                <form action="/usuario/borrar/<%= usuario.id %>" method="POST">
-                    <button type="submit"> Eliminar</button>
-                </form>
 
-            </td>
-        </tr>
-    <% }) %>
-</table>
+        <table class="table table-hover">
+            <!-- tr -> table row -->
+            <thead>
+            <tr>
+                <!-- th -> table header -->
+                <th>Nombre</th>
+                <th>Correo</th>
+                <th>Fecha de Nacimiento</th>
+                <th>Acciones</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!-- tr -> table row -->
+            <% arregloUsuario.forEach( (usuario)=> { %>
+                <tr>
+                    <!-- td -> table detail -->
+                    <td><%= usuario.nombre %></td>
+                    <td><%= usuario.correo %></td>
+                    <td><%= usuario.fechaNacimiento %></td>
+                    <td>
+                        <a href="/rol-por-usuario/asignar-rol/<%= usuario.id %>">
+                            <button
+                                    class="btn btn-outline-info btn-block espaciado-boton">Actualizar</button>
+                        </a>
+                        <form action="/usuario/borrar/<%= usuario.id %>" method="POST">
+                            <button
+                                    class="btn btn-outline-info btn-block espaciado-boton" type="submit"> Eliminar</button>
+                        </form>
+
+                    </td>
+                </tr>
+            <% }) %>
+            </tbody>
+        </table>
+
+    </div>
+
+
+</div>
+
+
+<%- include('librerias')%>
