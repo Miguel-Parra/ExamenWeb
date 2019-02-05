@@ -9,10 +9,6 @@ export class MedicamentoController {
     constructor(private readonly _medicamentoService: MedicamentoService) {
     }
 
-
-
-
-
     @Get('inicio/:idPaciente')
     async mostrarMedicamento(
         @Res() response,
@@ -111,7 +107,7 @@ export class MedicamentoController {
 
         const parametrosConsulta = `?accion=crear&nombre=${medicamento.nombreMedicamento}`;
 
-        response.redirect('/medicamento/medicamento' + parametrosConsulta)
+        response.redirect('/medicamento/inicio' + parametrosConsulta)
     }
 
     //BORRAR USUARIO
@@ -128,7 +124,7 @@ export class MedicamentoController {
 
         const parametrosConsulta = `?accion=borrar&nombre=${medicamentoEncontrado.nombreMedicamento}`;
 
-        response.redirect('/medicamento/medicamento' + parametrosConsulta);
+        response.redirect('/medicamento/inicio' + parametrosConsulta);
     }
 
     /////actualizar datos del usuario
@@ -160,7 +156,7 @@ export class MedicamentoController {
 
         const parametrosConsulta = `?accion=actualizar&nombre=${medicamento.nombreMedicamento}`;
 
-        response.redirect('/medicamento/medicamento' + parametrosConsulta);
+        response.redirect('/medicamento/inicio' + parametrosConsulta);
     }
 
 }
