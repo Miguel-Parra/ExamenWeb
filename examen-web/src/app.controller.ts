@@ -20,14 +20,14 @@ export class AppController {
 
     @Post('login')
     async metodoLogin(
-        @Body('username') username: string,
+        @Body('correo') correo: string,
         @Body('password') password: string,
         @Res() res,
         @Session() sesion,
 
     ) {
 
-        const autenticacion = await this._usuarioService.autenticar(username, password)
+        const autenticacion = await this._usuarioService.autenticar(correo, password)
 
         if (autenticacion) {
             const idUsuario = autenticacion.id;
@@ -36,7 +36,7 @@ export class AppController {
             if (rolUsuario) {
                 const nombreRol=rolUsuario.rol.nombreRol
                 sesion.rol = nombreRol
-                sesion.username = username;
+                sesion.correo = correo;
                 sesion.idUsuario = idUsuario;
                // console.log(sesion)
                 switch (nombreRol) {
