@@ -16,10 +16,9 @@ export class EventoEntity {
 
     @Column({
         name: "fecha_evento",
-        type: "varchar",
-        length: 15
+        type: "date",
     })
-    fechaEvento: string;
+    fechaEvento: Date;
 
     @Column({
         name: "latitud",

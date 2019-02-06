@@ -1,3 +1,7 @@
+<% const estaCreando = typeof evento === "undefined"%>
+
+<% const existeMensaje = typeof mensaje !== "undefined"%>
+
 <!DOCTYPE html>
 <html>
 
@@ -84,39 +88,77 @@
 </p>
 
 <div class="container">
-    <form action="/evento/crear-evento" method="POST">
-        <h1 align="center">Crear un evento</h1>
-                    <div>
-                        <label for="nombre">Nombre</label>
-                        <input class="form-control"
-                               type="text"
-                               id="nombre"
-                               name="nombre">
-                    </div>
-                    <div>
-                        <label for="fecha">Fecha</label>
-                        <input class="form-control"
-                               type="date"
-                               id="fecha"
-                               name="fecha">
-                    </div>
-                    <div>
-                        <label for="latitud">Latitud</label>
-                        <input class="form-control"
-                               type="date"
-                               id="fecha"
-                               name="fecha">
-                    </div>
-                    <div>
-                        <label for="longitud">Longitud</label>
-                        <input class="form-control"
-                               id="longitud"
-                               name= "longitud">
-                    </div>
+
+    <h1 align="center"> <%= estaCreando ? 'Registrar':'Actualizar' %> un Evento</h1>
+
+
+    <% if (existeMensaje){%>
+    <p>MENSAJE: <%=mensaje%></p>
+    <%}%>
+
+
+        <form action="/evento/<%= estaCreando ? 'crear' : 'actualizar' %>-evento/<%= estaCreando ? '' :evento.id %>"
+              method="POST">
+
+
+        <div class="row">
+            <div class="col-sm-6">
+                <div>
+                    <label for="nombreEvento">Nombre</label>
+                    <input class="form-control"
+                           type="text"
+                           id="nombreEvento"
+                           name="nombreEvento"
+                           value="<%= estaCreando ? '' : evento.nombreEvento %>" required>
+
+                </div>
+            </div>
+
+
+        <div class="col-sm-6">
+            <div>
+                <label for="latitud">Latitud</label>
+                <input class="form-control"
+                       type="latitud"
+                       id="latitud"
+                       name="latitud"
+                       value="<%= estaCreando ? '' : evento.latitud %>" required>
+
+            </div>
+
+        </div>
+
+        <div class="col-sm-6">
+
+
+            <div>
+                <label for="fechaEvento">Fecha</label>
+                <input class="form-control"
+                       type="date"
+                       id="fechaEvento"
+                       name="fechaEvento"
+                       value="<%= estaCreando ? '' : evento.fechaEvento %>" required>
+
+            </div>
+
+        </div>
+
+        <div class="col-sm-6">
+            <div>
+                <label for="longitud">Longitud</label>
+                <input class="form-control"
+                       id="longitud"
+                       name= "longitud"
+                       value="<%= estaCreando ? '' : evento.longitud %>" required>
+            </div>
+
+
+        </div>
+        </div>
 
         <div class="row">
             <div>
-                <button>Crear</button>
+                <button><%= estaCreando ? 'Crear' : 'Actualizar' %> evento</button>
             </div>
         </div>
     </form>

@@ -4,11 +4,14 @@ import {PacienteEntity} from "./paciente.entity";
 import {FindManyOptions, Like} from "typeorm";
 import {CreatePacienteDto} from "./dto/create-paciente.dto";
 import {validate, ValidationError} from "class-validator";
+import {EventoEntity} from "../evento/evento.entity";
+import {EventoService} from "../evento/evento.service";
 
 @Controller('paciente')
 
 export class PacienteController {
-    constructor(private readonly _pacienteService: PacienteService) {
+    constructor(private readonly _pacienteService: PacienteService,
+                private readonly _eventoService: EventoService) {
     }
 
     @Get('paciente')
@@ -41,6 +44,7 @@ export class PacienteController {
             }
 
             let pacientes: PacienteEntity[];
+            let evento: EventoEntity[]
 
             if (busqueda) {
 
@@ -73,10 +77,13 @@ export class PacienteController {
                 pacientes = await this._pacienteService.buscar(consulta);
             }
 
+
+
             response.render('lista-pacientes',
                 {
                     arregloPaciente: pacientes,
                     mensaje: mensaje,
+
 
                 })
         }else{
