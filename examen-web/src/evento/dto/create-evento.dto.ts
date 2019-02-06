@@ -1,9 +1,9 @@
-import {IsAlpha, IsDateString, IsNotEmpty, IsNumber} from "class-validator";
+import {IsAlpha, IsDateString, IsNotEmpty, IsNumber, Matches} from "class-validator";
 
 export class CreateEventoDto {
 
     @IsNotEmpty()
-    @IsAlpha()
+    @Matches(/^([a-z ñáéíóú]{2,60})$/i)
     nombreEvento:string
 
     @IsDateString()
