@@ -1,6 +1,13 @@
 <!doctype html>
 <html lang="es">
 <head>
+
+    <% const existeMensaje = typeof mensaje !== "undefined"%>
+
+    <% if (existeMensaje){%>
+    <p>MENSAJE: <%=mensaje%></p>
+    <%}%>
+
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
@@ -25,12 +32,12 @@
         <div>
             <div class="form-group">
                 <label for="correo">Usuario</label>
-                <input id="correo" type="text" name="correo" class="form-control">
+                <input id="correo" type="email" name="correo" required class="form-control">
             </div>
             <div>
                 <div class="form-group">
                     <label for="password">Password</label>
-                    <input id="password" type="password" name="password" class="form-control">
+                    <input id="password" type="password" name="password" required class="form-control">
                 </div>
             </div>
 

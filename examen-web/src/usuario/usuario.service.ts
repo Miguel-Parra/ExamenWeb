@@ -3,9 +3,7 @@ import {FindManyOptions, FindOneOptions, Repository} from "typeorm";
 import {UsuarioEntity} from "./usuario.entity";
 import {InjectRepository} from "@nestjs/typeorm";
 import {Usuario} from "./usuario.controller";
-import {PacienteEntity} from "../paciente/paciente.entity";
-import {Paciente} from "../paciente/paciente.service";
-import {stringify} from "querystring";
+
 
 @Injectable()
 
@@ -44,14 +42,14 @@ export class UsuarioService {
 
     async autenticar(correo: string, password: string): Promise<UsuarioEntity> {
 
-        console.log("adddddddddddddddddddddddddddfadfqqqqqqqqqqqqqqqqqqaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"+correo+password)
+        //console.log("adddddddddddddddddddddddddddfadfqqqqqqqqqqqqqqqqqqaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"+correo+password)
         const consulta: FindManyOptions<UsuarioEntity> = {
             where: {
                 correo: correo,
                 password: password
             },
         };
-console.log("sddddddddddddddddddddddddddddddddddZZZZZZZZZZZZZZZZZZZZZZZZZ"+this._usuarioRepository.findOne(consulta))
+//console.log("sddddddddddddddddddddddddddddddddddZZZZZZZZZZZZZZZZZZZZZZZZZ"+this._usuarioRepository.findOne(consulta))
         return await this._usuarioRepository.findOne(consulta)
 
     }
