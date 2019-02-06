@@ -227,8 +227,8 @@ export class PacienteController {
         paciente.hijos = Number(paciente.hijos)
         objetoValidacionPaciente.hijos = paciente.hijos
 
-
-        objetoValidacionPaciente.tieneSeguro = paciente.tieneSeguro
+        paciente.tieneSeguro=Boolean(Number(paciente.tieneSeguro));
+        objetoValidacionPaciente.tieneSeguro = paciente.tieneSeguro;
 
         const errores: ValidationError[] = await validate(objetoValidacionPaciente) // Me devuelve un arreglo de validacion de errores
 
