@@ -87,7 +87,7 @@ export class PacienteController {
 
                 })
         }else{
-            throw new BadRequestException({mensaje: "No tiene acceso a esta vista"});
+            response.redirect('/login')
         }
     }
 
@@ -97,14 +97,17 @@ export class PacienteController {
         @Res() response,
         @Session() sesion,
         @Query('error') error: string
+
     ) {
+
+        if(sesion.rol === 'usuario'){
         let mensaje = undefined;
 
         if(error){
             mensaje = "Datos erroneos";
         }
 
-        if(sesion.rol === 'usuario'){
+
             response.render(
                 'crear-Paciente',{
                     mensaje:mensaje
@@ -188,24 +191,29 @@ export class PacienteController {
     async actualizarPaciente(
         @Param('idPaciente') idPaciente: string,
         @Res() response,
-        @Query('error') error: string
+        @Query('error') error: string,
+        @Session() sesion
     ) {
+        if(sesion.rol === 'usuario') {
 
-        let mensaje = undefined;
+            let mensaje = undefined;
 
-        if(error){
-            mensaje = "Datos erroneos";
-        }
-
-        const usuarioActualizar = await this._pacienteService
-            .buscarPorId(Number(idPaciente));
-
-        response.render(
-            'crear-Paciente', {//ir a la pantalla de crear-usuario
-                paciente: usuarioActualizar,
-                mensaje: mensaje
+            if (error) {
+                mensaje = "Datos erroneos";
             }
-        )
+
+            const usuarioActualizar = await this._pacienteService
+                .buscarPorId(Number(idPaciente));
+
+            response.render(
+                'crear-Paciente', {//ir a la pantalla de crear-usuario
+                    paciente: usuarioActualizar,
+                    mensaje: mensaje
+                }
+            )
+        }else{
+            response.redirect('/login')
+        }
     }
 
     @Post('actualizar-Paciente/:idPaciente')

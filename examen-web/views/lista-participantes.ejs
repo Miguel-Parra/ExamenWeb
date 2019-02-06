@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.css">
+
+    <link rel="stylesheet" href="/CSS/estilos-generales.css">
+
+    <link rel="stylesheet" href="/bootstrap/css/animate.css">
+
+
+    <style>
+        table, th, td {
+            border: 1px solid #117a8b;
+            border-collapse: collapse;
+        }
+    </style>
+</head>
+<body>
+
+
+<p>
+    <a href="/login" class="btn btn-danger btn-lg" method="POST" >
+        <span class="glyphicon glyphicon-log-out" ></span> Iniciar Sesión
+    </a>
+</p>
+
+
+<div class="container">
+
+    <h1 align="center">  <%=nombreDelEvento%>  </h1>
+
+
+    <div class="row">
+    <% arregloParticipantes.forEach( (participante)=> { %>
+
+        <div class="col-sm-4">
+        <table  class="table table-hover" >
+            <tr>
+                <th>Nombre Medicamento</th>
+                <td><%= participante.medicamento.nombreMedicamento%></td>
+
+            </tr>
+            <tr>
+                <th>Composición</th>
+                <td><%= participante.medicamento.composicion%></td>
+
+            </tr>
+            <tr>
+                <th>Gramos a ingerir</th>
+                <td><%= participante.medicamento.gramosAIngerir%></td>
+
+            </tr>
+            <tr>
+                <th>Usado para</th>
+                <td><%= participante.medicamento.usadoPara%></td>
+
+            </tr>
+            <tr>
+                <th>fecha caducidad</th>
+                <td><%= participante.medicamento.fechaCaducidad%></td>
+
+            </tr>
+
+            <tr>
+                <th>Número pastillas</th>
+                <td><%= participante.medicamento.numeroPastillas%></td>
+
+            </tr>
+
+
+        </table>
+        </div>
+
+    <% }) %>
+    </div>
+
+
+</div>
+
+
+<%- include('librerias')%>
+
+
+
+
+
+
+
+
+</body>
+</html>

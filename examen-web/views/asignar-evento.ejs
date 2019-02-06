@@ -1,6 +1,6 @@
 <% const existeMensaje = typeof mensaje !== "undefined"%>
 
-<% const existeRol = typeof mensajeRol!== "undefined"%>
+<% const existeRol = typeof mensajeEvento!== "undefined"%>
 
 
 <%- include('header'); %>
@@ -17,26 +17,35 @@
 <%}%>
 
 <% if (existeRol){%>
-<p>MENSAJE: <%=mensajeRol%></p>
+<p>MENSAJE: <%=mensajeEvento%></p>
 <%}%>
 
 
 
 
 <div class="container" >
-    <h1 align="center">Asignar roles </h1>
+    <h1 align="center">Asignar eventos </h1>
     <div class="row">
         <div class="col-sm-4" align="center">
 
-            <table >USUARIO
+            <table >MEDICAMENTO
                 <tr>
-                    <td><%= usuario.nombre %></td>
+                    <td><%= medicamento.nombreMedicamento %></td>
                 </tr>
                 <tr>
-                    <td><%= usuario.correo %></td>
+                    <td><%= medicamento.gramosAIngerir %></td>
                 </tr>
                 <tr>
-                    <td><%= usuario.fechaNacimiento %></td>
+                    <td><%= medicamento.composicion %></td>
+                </tr>
+                <tr>
+                    <td><%= medicamento.usadoPara %></td>
+                </tr>
+                <tr>
+                    <td><%= medicamento.fechaCaducidad %></td>
+                </tr>
+                <tr>
+                    <td><%= medicamento.numeroPastillas %></td>
                 </tr>
             </table>
 
@@ -46,13 +55,13 @@
         <div class="col-sm-4" align="center">
 
             <table >
-                ROLES DEL USUARIO
-                <%rolUsuario.forEach((rol)=> { %>
+                EVENTOS - MEDICAMENTO
+                <%eventoMedicamento.forEach((evento)=> { %>
                     <tr>
-                        <td><%= rol.rol.nombreRol%></td>
+                        <td><%= evento.evento.nombreEvento%></td>
                         <td>
-                            <form action="/rol-por-usuario/borrar/<%= rol.id %>" method="POST">
-                                <button type="submit"> X </button>
+                            <form action="/evento-por-medicamento/borrar/<%=paciente%>/<%= evento.id %>" method="POST">
+                                <button type="submit"> eliminar </button>
                             </form>
                         </td>
                     </tr>
@@ -63,19 +72,19 @@
 
         <div class="col-sm-4" align="center">
 
-            <form action="/rol-por-usuario/asignar-rol/<%=usuario.id%>" method="POST">
+            <form action="/evento-por-medicamento/asignar-evento/<%=paciente%>/<%=medicamento.id%>" method="POST">
                 <div>
-                    <label for="rol"></label>
-                    <select name="rol" id="rol">
-                        <% rol.forEach( (rolLista)=> { %>
-                        <option value="<%=rolLista.id%>">
+                    <label for="evento"></label>
+                    <select name="evento" id="evento">
+                        <% evento.forEach( (eventoLista)=> { %>
+                        <option value="<%=eventoLista.id%>">
 
-                            <%=rolLista.nombreRol%></option>
+                            <%=eventoLista.nombreEvento%></option>
                         <% }) %>
                     </select>
                 </div>
                 <br>
-                <button>Agregar rol</button>
+                <button>Agregar evento</button>
             </form>
 
         </div>
@@ -84,7 +93,7 @@
 
     </div>
 
-    <a href="/usuario/inicio">
+    <a href="/medicamento/inicio/<%=paciente%>/">
         <button class="btn btn-outline-info  espaciado-boton" >Regresar</button>
     </a>
 </div>

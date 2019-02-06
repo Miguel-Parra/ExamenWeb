@@ -15,6 +15,16 @@
 </head>
 
 <body>
+
+
+<% const existeMensaje = typeof mensajeVerificacion !== "undefined"%>
+
+<% if (existeMensaje){%>
+<p>MENSAJE: <%=mensajeVerificacion%></p>
+<%}%>
+
+
+
 <div class="container col-sm-4" >
 
     <h2 align="center">Ingresa tus credenciales</h2>

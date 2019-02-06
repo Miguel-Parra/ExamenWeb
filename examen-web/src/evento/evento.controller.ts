@@ -22,8 +22,6 @@ export class EventoController{
         @Session() sesion
     ){
 
-        console.log(sesion.rol)
-
         if(sesion.rol==='usuario') {
             let mensaje = undefined;
             console.log(sesion)
@@ -65,16 +63,22 @@ export class EventoController{
                 mensaje: mensaje,
             })
         }else{
-            throw new BadRequestException({mensaje: "No tiene acceso a esta vista"});
+            response.redirect('/login')
+
         }
 
     }
 
     @Get('crear-evento')
     mostrarCrearEvento(
-        @Res() response
+        @Res() response,
+        @Session() sesion
     ){
-        response.render('crear-evento')
+        if(sesion.rol==='usuario') {
+            response.render('crear-evento')
+        }else{
+            response.redirect('/login')
+        }
     }
 
     @Post('crear-evento')
@@ -108,21 +112,27 @@ export class EventoController{
     async actualizarEvento(
         @Param('idEvento') idEvento: string,
         @Res() response,
-        @Query('error') error: string
+        @Query('error') error: string,
+        @Session() sesion
     ) {
 
-        let mensaje = undefined;
+        if(sesion.rol==='usuario') {
+
+            let mensaje = undefined;
 
 
-        const eventoActualizar = await this._eventoService
-            .buscarPorId(Number(idEvento));
+            const eventoActualizar = await this._eventoService
+                .buscarPorId(Number(idEvento));
 
-        response.render(
-            'crear-evento', {//ir a la pantalla de crear-usuario
-                evento: eventoActualizar,
-                mensaje: mensaje
-            }
-        )
+            response.render(
+                'crear-evento', {//ir a la pantalla de crear-usuario
+                    evento: eventoActualizar,
+                    mensaje: mensaje
+                }
+            )
+        }else{
+            response.redirect('/login')
+        }
     }
 
     @Post('actualizar-evento/:idEvento')

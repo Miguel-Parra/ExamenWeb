@@ -4,6 +4,7 @@ import {EventoEntity} from "./evento.entity";
 import {InjectRepository} from "@nestjs/typeorm";
 import {PacienteEntity} from "../paciente/paciente.entity";
 import {Paciente} from "../paciente/paciente.service";
+import {RolEntity} from "../rol/rol.entity";
 
 @Injectable()
 export class EventoService {
@@ -41,6 +42,10 @@ export class EventoService {
 
         const pacienteEntity = this._eventoRepository.create(nuevoEvento);
         return this._eventoRepository.save(pacienteEntity)
+    }
+
+    obtenerEvento(): Promise<EventoEntity[]> {
+        return this._eventoRepository.find()
     }
 
 }

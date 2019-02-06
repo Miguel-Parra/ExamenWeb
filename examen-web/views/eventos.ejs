@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.css">
+
+    <link rel="stylesheet" href="/CSS/estilos-generales.css">
+
+    <link rel="stylesheet" href="/bootstrap/css/animate.css">
+
+
+    <style>
+        table, th, td {
+            border: 1px solid #117a8b;
+            border-collapse: collapse;
+        }
+    </style>
+</head>
+<body>
+
+
+<p>
+    <a href="/login" class="btn btn-danger btn-lg" method="POST">
+        <span class="glyphicon glyphicon-log-out"></span> Iniciar Sesión
+    </a>
+</p>
+
+
+<div class="container">
+
+    <h1 align="center">Lista de eventos</h1>
+
+    <form action="/eventos" method="get">
+
+        <label for="busqueda">Búsqueda evento</label>
+        <input id="busqueda" type="text" name="busqueda">
+
+        <button>Buscar</button>
+        <br><br>
+
+    </form>
+
+    <table  class="table table-hover" >
+        <!-- tr -> table row -->
+        <tr>
+            <!-- th -> table header -->
+            <th>Nombre Evento</th>
+            <th>Fecha</th>
+            <th>Acciones</th>
+        </tr>
+        <!-- tr -> table row -->
+        <% arregloEvento.forEach( (evento)=> { %>
+            <tr>
+                <!-- td -> table detail -->
+                <td><%= evento.nombreEvento%></td>
+                <td><%= evento.fechaEvento%></td>
+                <td>
+
+                    <a href="/ver-participantes/<%= evento.id %>?nombreEvento=<%= evento.nombreEvento%>">
+                        <button  class="btn btn-outline-info btn-block espaciado-boton" type="submit">Ver</button>
+
+                    </a>
+
+                </td>
+            </tr>
+        <% }) %>
+    </table>
+
+
+
+</div>
+
+
+<%- include('librerias')%>
+
+
+
+
+
+
+
+
+</body>
+</html>

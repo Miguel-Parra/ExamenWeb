@@ -26,12 +26,12 @@ export class RolPorUsuarioController {
     ){
         if(sesion.rol==='administrador') {
 
-            let mensajeRepetido = undefined
+            let mensajeRolRepetido = undefined
             let usuarioRoles: RolPorUsuarioEntity[];
             let roles: RolEntity[];
 
             if (notificacion) {
-                mensajeRepetido = `El rol ${notificacion} ya se encuentra asignado a este usuario`
+                mensajeRolRepetido = `El rol ${notificacion} ya se encuentra asignado a este usuario`
             }
             const usuarioActualizar = await this._usuarioService.buscarPorId(+idUsuario)
             usuarioRoles = await this._rolPorUsuarioService.obtenerRoles(+idUsuario)
@@ -41,7 +41,7 @@ export class RolPorUsuarioController {
                     usuario: usuarioActualizar,
                     rolUsuario: usuarioRoles,
                     rol: roles,
-                    mensajeRol: mensajeRepetido,
+                    mensajeRol: mensajeRolRepetido,
                 })
         }else{
             response.redirect('/login')
