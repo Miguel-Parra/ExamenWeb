@@ -47,7 +47,7 @@ export class EventoService {
 export interface Evento{
     id?:number;
     nombreEvento: string
-    fechaEvento: Date
+    fechaEvento: Date;
     longitud: number
     latitud: number
 }
