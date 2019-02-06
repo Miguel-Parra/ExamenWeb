@@ -25,8 +25,27 @@ export class EventoService {
     }
 
 
+    borrar(id: number): Promise<EventoEntity> {
+        const eventoEntityEliminar = this._eventoRepository.create({
+            id: id
+        });
+        return this._eventoRepository.remove(eventoEntityEliminar)
+    }
+
+    buscarPorId(id: number): Promise<EventoEntity> {
+        return this._eventoRepository.findOne(id)
+    }
+
+    actualizar(nuevoEvento: Evento): Promise<EventoEntity> {
+
+
+        const pacienteEntity = this._eventoRepository.create(nuevoEvento);
+        return this._eventoRepository.save(pacienteEntity)
+    }
+
 }
 export interface Evento{
+    id?:number;
     nombreEvento: string
     fechaEvento: Date
     longitud: number

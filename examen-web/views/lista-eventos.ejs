@@ -1,0 +1,81 @@
+<% const existeMensaje = typeof mensaje !== "undefined"%>
+<%- include('header'); %>
+
+<style>
+    table, th, td {
+        border: 1px solid black;
+        border-collapse: collapse;
+    }
+</style>
+
+<% if (existeMensaje){%>
+<p>MENSAJE: <%=mensaje%></p>
+<%}%>
+
+
+<div class="container">
+
+    <h1 align="center">Lista de eventos</h1>
+
+    <form action="/evento/inicio" method="get">
+
+        <label for="busqueda">Búsqueda evento</label>
+        <input id="busqueda" type="text" name="busqueda">
+
+        <button>Buscar</button>
+    </form>
+    <a href="/evento/crear-evento">
+        <button>Ingresar un nuevo evento</button>
+    </a>
+
+
+    <table  class="table table-hover" >
+        <!-- tr -> table row -->
+        <tr>
+            <!-- th -> table header -->
+            <th>Nombre del evento</th>
+            <th>Fecha</th>
+            <th>Latitud</th>
+            <th>Longitud</th>
+            <th>Acciones</th>
+        </tr>
+        <!-- tr -> table row -->
+        <% arregloEvento.forEach( (evento)=> { %>
+            <tr>
+                <!-- td -> table detail -->
+                <td><%= evento.nombreEvento%></td>
+                <td><%= evento.fechaEvento%></td>
+                <td><%= evento.longitud %></td>
+                <td><%= evento.latitud %></td>
+                <td>
+
+                    <form action="/evento/eliminar-evento/<%= evento.id %>" method="POST">
+                        <button  class="btn btn-outline-info btn-block espaciado-boton" type="submit"
+                                 type="submit"> Eliminar</button>
+                    </form>
+                    <a href="/evento/actualizar-evento/<%= evento.id %>">
+                        <button  class="btn btn-outline-info btn-block espaciado-boton" type="submit">Actualizar</button>
+
+                    </a>
+
+
+                    <a href="/medicamento/inicio/">
+                        <button  class="btn btn-outline-info btn-block espaciado-boton" type="submit"> ver medicamentos</button>
+
+                    </a>
+
+
+                </td>
+            </tr>
+        <% }) %>
+    </table>
+
+    <a href="/paciente/paciente">
+        <button  class="btn btn-outline-info espaciado-boton" type="submit">Regresar </button>
+    </a>
+
+
+</div>
+
+
+<%- include('librerias')%>

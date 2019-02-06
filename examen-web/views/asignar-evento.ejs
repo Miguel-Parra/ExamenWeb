@@ -1,0 +1,96 @@
+<% const existeMensaje = typeof mensaje !== "undefined"%>
+
+<% const existeRol = typeof mensajeRol!== "undefined"%>
+
+
+<%- include('header'); %>
+<!--<link rel="stylesheet" href="/bootstrap/css/bootstrap.css"> -->
+<style>
+    table, th, td {
+        border: 1px solid black;
+        border-collapse: collapse;
+    }
+</style>
+
+<% if (existeMensaje){%>
+<p>MENSAJE: <%=mensaje%></p>
+<%}%>
+
+<% if (existeRol){%>
+<p>MENSAJE: <%=mensajeRol%></p>
+<%}%>
+
+
+
+
+<div class="container" >
+    <h1 align="center">Asignar roles </h1>
+    <div class="row">
+        <div class="col-sm-4" align="center">
+
+            <table >USUARIO
+                <tr>
+                    <td><%= usuario.nombre %></td>
+                </tr>
+                <tr>
+                    <td><%= usuario.correo %></td>
+                </tr>
+                <tr>
+                    <td><%= usuario.fechaNacimiento %></td>
+                </tr>
+            </table>
+
+        </div>
+
+
+        <div class="col-sm-4" align="center">
+
+            <table >
+                ROLES DEL USUARIO
+                <%rolUsuario.forEach((rol)=> { %>
+                    <tr>
+                        <td><%= rol.rol.nombreRol%></td>
+                        <td>
+                            <form action="/rol-por-usuario/borrar/<%= rol.id %>" method="POST">
+                                <button type="submit"> X </button>
+                            </form>
+                        </td>
+                    </tr>
+                <% }) %>
+            </table>
+
+        </div>
+
+        <div class="col-sm-4" align="center">
+
+            <form action="/rol-por-usuario/asignar-rol/<%=usuario.id%>" method="POST">
+                <div>
+                    <label for="rol"></label>
+                    <select name="rol" id="rol">
+                        <% rol.forEach( (rolLista)=> { %>
+                        <option value="<%=rolLista.id%>">
+
+                            <%=rolLista.nombreRol%></option>
+                        <% }) %>
+                    </select>
+                </div>
+                <br>
+                <button>Agregar rol</button>
+            </form>
+
+        </div>
+
+        <br>
+
+    </div>
+
+    <a href="/usuario/inicio">
+        <button class="btn btn-outline-info  espaciado-boton" >Regresar</button>
+    </a>
+</div>
+
+
+
+
+    <%- include('footer'); %>
+

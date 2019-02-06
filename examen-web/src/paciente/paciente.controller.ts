@@ -77,13 +77,13 @@ export class PacienteController {
                 pacientes = await this._pacienteService.buscar(consulta);
             }
 
-            evento = await this._eventoService.buscar()
+
 
             response.render('lista-pacientes',
                 {
                     arregloPaciente: pacientes,
                     mensaje: mensaje,
-                    arregloEvento: evento
+
 
                 })
         }else{
