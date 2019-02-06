@@ -1,3 +1,4 @@
+
 import {Get, Controller, Res, Post, Body, Session, BadRequestException, Query, Param} from '@nestjs/common';
 import { AppService } from './app.service';
 import {UsuarioService} from "./usuario/usuario.service";
@@ -9,6 +10,10 @@ import {EventoService} from "./evento/evento.service";
 import {FindManyOptions, Like} from "typeorm";
 import {MedicamentoEntity} from "./medicamento/medicamento.entity";
 import {EventoPorMedicamentoService} from "./evento-por-medicamento/evento-por-medicamento.service";
+import {CreateUsuarioDto} from "./usuario/dto/create-usuario.dto";
+import {CreateLoginDto} from "./dto/create-login.dto";
+import {validate, ValidationError} from "class-validator";
+
 
 @Controller()
 export class AppController {
@@ -22,13 +27,19 @@ export class AppController {
     @Get('login')
     mostrarLogin(
         @Res() res,
-        @Query("mensaje") mensaje
+        @Query("mensaje") mensajeObtenido,
+    @Query('error') error: string
     ) {
-        let mensajeVerificacion=undefined;
-        if(mensaje){
-            mensajeVerificacion=mensaje;
+		 let mensaje = undefined;
+
+        if(error){
+            mensaje = "Datos erroneos";
         }
-        res.render('login', {mensajeVerificacion: mensajeVerificacion})
+        let mensajeVerificacion=undefined;
+        if(mensajeObtenido){
+            mensajeVerificacion=mensajeObtenido;
+        }
+        res.render('login', {mensajeVerificacion: mensajeVerificacion, mensaje:mensaje})
     }
 
     @Post('login')
@@ -40,37 +51,61 @@ export class AppController {
 
     ) {
 
-        const autenticacion = await this._usuarioService.autenticar(correo, password)
+        let mensaje = undefined;
 
-        if (autenticacion) {
-            const idUsuario = autenticacion.id;
-            const rolUsuario = await this._rolPorUsuarioServicio.verificarRol(+idUsuario)
+        const objetoValidacionLogin = new CreateLoginDto();
+        objetoValidacionLogin.correo = correo;
+        objetoValidacionLogin.password = password;
 
-            if (rolUsuario) {
-                const nombreRol=rolUsuario.rol.nombreRol
-                sesion.rol = nombreRol
-                sesion.correo = correo;
-                sesion.idUsuario = idUsuario;
-                // console.log(sesion)
-                switch (nombreRol) {
-                    case 'usuario':
-                        res.redirect('paciente/paciente')
-                        break;
-                    case 'administrador':
-                        res.redirect('usuario/inicio')
-                        break;
-                    default:
-                        res.send('Aun no se ha asignado una tarea para este rol')
+        const errores: ValidationError[] =
+            await validate(objetoValidacionLogin) // Me devuelve un arreglo de validacion de errores
 
+        const hayErrores = errores.length > 0;
+
+        if (hayErrores) {
+            console.error(errores)
+
+            const parametrosConsulta = `?error=${errores[0].constraints}`;
+
+            res.redirect('/login/' + parametrosConsulta)
+
+        } else {
+
+            const autenticacion = await this._usuarioService.autenticar(correo, password)
+
+            if (autenticacion) {
+                const idUsuario = autenticacion.id;
+                const rolUsuario = await this._rolPorUsuarioServicio.verificarRol(+idUsuario)
+
+                if (rolUsuario) {
+                    const nombreRol = rolUsuario.rol.nombreRol
+                    sesion.rol = nombreRol
+                    sesion.correo = correo;
+                    sesion.idUsuario = idUsuario;
+                    // console.log(sesion)
+                    switch (nombreRol) {
+                        case 'usuario':
+                            res.redirect('paciente/paciente')
+                            break;
+                        case 'administrador':
+                            res.redirect('usuario/inicio')
+                            break;
+                        default:
+                            res.send('Aun no se ha asignado una tarea para este rol')
+
+                    }
+                } else {
+                    //res.send('sin rol')
+                    throw new BadRequestException({mensaje: 'Espere estamos verificando sus datos'})
                 }
+
             } else {
+
                 res.redirect('/login?mensaje=espere estamos verificando sus datos')
                 //res.send('sin rol')
                 //throw new BadRequestException({mensaje: 'Espere estamos verificando sus datos'})
-            }
 
-        } else {
-            res.redirect('login')
+            }
         }
     }
 
@@ -85,6 +120,7 @@ export class AppController {
         sesion.destroy()
         res.redirect('login')
     }
+
 
     @Get('eventos')
     async mostrarEventos(
@@ -132,6 +168,7 @@ export class AppController {
             nombreDelEvento: nombreEvento,
         })
     }
+
 }
 
 

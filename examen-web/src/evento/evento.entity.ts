@@ -22,13 +22,13 @@ export class EventoEntity {
 
     @Column({
         name: "latitud",
-        type: "decimal",
+        type: "float",
     })
     latitud: number;
 
     @Column({
         name: "longitud",
-        type: "decimal",
+        type: "float",
     })
     longitud: number;
 

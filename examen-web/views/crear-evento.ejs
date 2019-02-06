@@ -115,10 +115,12 @@
             <div>
                 <label for="latitud">Latitud</label>
                 <input class="form-control"
-                       type="latitud"
+                       type="float"
                        id="latitud"
                        name="latitud"
-                       value="<%= estaCreando ? '' : evento.latitud %>" required>
+                       value="<%= estaCreando ? '' : evento.latitud %>"
+                       readonly="readonly"
+                       required>
 
             </div>
 
@@ -131,6 +133,7 @@
                 <label for="fechaEvento">Fecha</label>
                 <input class="form-control"
                        type="date"
+                       min="2019-02-08"
                        id="fechaEvento"
                        name="fechaEvento"
                        value="<%= estaCreando ? '' : evento.fechaEvento %>" required>
@@ -143,9 +146,12 @@
             <div>
                 <label for="longitud">Longitud</label>
                 <input class="form-control"
+                       type="float"
                        id="longitud"
                        name= "longitud"
-                       value="<%= estaCreando ? '' : evento.longitud %>" required>
+                       value="<%= estaCreando ? '' : evento.longitud %>"
+                       readonly="readonly"
+                       required>
             </div>
 
 

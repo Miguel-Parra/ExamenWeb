@@ -4,23 +4,26 @@ import {PacienteEntity} from "../paciente/paciente.entity";
 import {EventoEntity} from "./evento.entity";
 import {FindManyOptions, Like} from "typeorm";
 import {Paciente} from "../paciente/paciente.service";
+import {medicamentoDto} from "../medicamento/dto/medicamento.dto";
+import {validate, ValidationError} from "class-validator";
+import {CreateEventoDto} from "./dto/create-evento.dto";
 
 @Controller('evento')
 
-export class EventoController{
+export class EventoController {
 
-    constructor (private readonly _eventoService: EventoService){
+    constructor(private readonly _eventoService: EventoService) {
     }
 
 
     @Get('inicio')
-    async  mostrarInicio(
+    async mostrarInicio(
         @Res() response,
         @Query('accion') accion: string,
         @Query('nombre') nombre: string,
         @Query('busqueda') busqueda: string,
         @Session() sesion
-    ){
+    ) {
 
         if(sesion.rol==='usuario') {
             let mensaje = undefined;
@@ -56,15 +59,15 @@ export class EventoController{
                 evento = await this._eventoService.buscar(consulta);
             } else {
 
-                evento= await this._eventoService.buscar();
+                evento = await this._eventoService.buscar();
             }
-            response.render('lista-eventos',{
-                arregloEvento:evento,
+            response.render('lista-eventos', {
+                arregloEvento: evento,
                 mensaje: mensaje,
             })
+
         }else{
             response.redirect('/login')
-
         }
 
     }
@@ -72,25 +75,59 @@ export class EventoController{
     @Get('crear-evento')
     mostrarCrearEvento(
         @Res() response,
-        @Session() sesion
+		 @Session() sesion,
+		 @Query('error') error: string
+
+       
     ){
         if(sesion.rol==='usuario') {
-            response.render('crear-evento')
+			let mensaje = undefined;
+
+        if (error) {
+            mensaje = "Datos erroneos";
+        }
+            response.render('crear-evento',{
+                mensaje: mensaje
+            })
         }else{
             response.redirect('/login')
         }
+
     }
 
     @Post('crear-evento')
-    async  metodoCrearEvento(
+    async metodoCrearEvento(
         @Res() response,
-        @Body() evento:Evento,
-    ){
-        await this._eventoService.crear(evento);
-        const parametrosConsulta = `?accion=crear&nombre=${evento.nombreEvento}`;
+        @Body() evento: Evento,
+    ) {
+        let mensaje = undefined;
 
-        response.redirect('/evento/inicio' + parametrosConsulta)
+        const objetoValidacionEvento = new CreateEventoDto();
 
+        objetoValidacionEvento.nombreEvento = evento.nombreEvento
+
+        const fec = new Date(evento.fechaEvento).toISOString();
+        objetoValidacionEvento.fechaEvento = fec
+
+        const errores: ValidationError[] =
+            await validate(objetoValidacionEvento);
+
+        const hayErrores = errores.length > 0;
+
+        if (hayErrores) {
+            console.error(errores);
+
+            const parametrosConsulta = `?error=${errores[0].constraints}`;
+
+            response.redirect('/evento/crear-evento/' + parametrosConsulta)
+        } else {
+
+            await this._eventoService.crear(evento);
+            const parametrosConsulta = `?accion=crear&nombre=${evento.nombreEvento}`;
+
+            response.redirect('/evento/inicio' + parametrosConsulta)
+
+        }
     }
 
     @Post('eliminar-evento/:idEvento')
@@ -119,6 +156,9 @@ export class EventoController{
         if(sesion.rol==='usuario') {
 
             let mensaje = undefined;
+        if (error) {
+            mensaje = "Datos erroneos";
+        }
 
 
             const eventoActualizar = await this._eventoService
@@ -127,29 +167,51 @@ export class EventoController{
             response.render(
                 'crear-evento', {//ir a la pantalla de crear-usuario
                     evento: eventoActualizar,
-                    mensaje: mensaje
+                    mensaje: mensaje,
+					 idEvento: idEvento
                 }
             )
         }else{
             response.redirect('/login')
         }
+
     }
 
     @Post('actualizar-evento/:idEvento')
     async actualizarPacienteFormulario(
         @Param('idEvento') idEvento: string,
         @Res() response,
-        @Body() evento :Evento
+        @Body() evento: Evento
     ) {
         let mensaje = undefined;
-        evento.id = +idEvento;
 
-        await this._eventoService.actualizar( evento);
+        const objetoValidacionEvento = new CreateEventoDto();
 
-        const parametrosConsulta = `?accion=actualizar&nombre=${evento.nombreEvento}`;
+        objetoValidacionEvento.nombreEvento = evento.nombreEvento
 
-        response.redirect('/evento/inicio' + parametrosConsulta);
+        const fec = new Date(evento.fechaEvento).toISOString();
+        objetoValidacionEvento.fechaEvento = fec
+
+        const errores: ValidationError[] =
+            await validate(objetoValidacionEvento);
+
+        const hayErrores = errores.length > 0;
+
+        if (hayErrores) {
+            console.error(errores);
+
+            const parametrosConsulta = `?error=${errores[0].constraints}`;
+
+            response.redirect('/evento/actualizar-evento/'+ idEvento + parametrosConsulta)
+        } else {
+            evento.id = +idEvento;
+
+            await this._eventoService.actualizar(evento);
+
+            const parametrosConsulta = `?accion=actualizar&nombre=${evento.nombreEvento}`;
+
+            response.redirect('/evento/inicio' + parametrosConsulta);
+        }
     }
-
 }
 

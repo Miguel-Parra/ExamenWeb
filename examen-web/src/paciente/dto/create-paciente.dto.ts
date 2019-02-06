@@ -14,11 +14,11 @@ import {
 export class CreatePacienteDto{
 
     @IsNotEmpty()
-    @IsAlpha()
+    @Matches(/^([a-z ñáéíóú]{2,60})$/i)
     nombres:string;
 
     @IsNotEmpty()
-    @IsAlpha()
+    @Matches(/^([a-z ñáéíóú]{2,60})$/i)
     apellidos:string;
 
     @IsDateString()
