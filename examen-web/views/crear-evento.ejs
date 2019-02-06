@@ -86,37 +86,57 @@
 <div class="container">
     <form action="/evento/crear-evento" method="POST">
         <h1 align="center">Crear un evento</h1>
-                    <div>
-                        <label for="nombre">Nombre</label>
-                        <input class="form-control"
-                               type="text"
-                               id="nombre"
-                               name="nombre">
-                    </div>
-                    <div>
-                        <label for="fecha">Fecha</label>
-                        <input class="form-control"
-                               type="date"
-                               id="fecha"
-                               name="fecha">
-                    </div>
-                    <div>
-                        <label for="latitud">Latitud</label>
-                        <input class="form-control"
-                               type="date"
-                               id="fecha"
-                               name="fecha">
-                    </div>
-                    <div>
-                        <label for="longitud">Longitud</label>
-                        <input class="form-control"
-                               id="longitud"
-                               name= "longitud">
-                    </div>
+
+        <div class="row">
+            <div class="col-sm-6">
+                <div>
+                    <label for="nombreEvento">Nombre</label>
+                    <input class="form-control"
+                           type="text"
+                           id="nombreEvento"
+                           name="nombreEvento">
+                </div>
+            </div>
+
+
+        <div class="col-sm-6">
+            <div>
+                <label for="latitud">Latitud</label>
+                <input class="form-control"
+                       type="latitud"
+                       id="latitud"
+                       name="latitud">
+            </div>
+
+        </div>
+
+        <div class="col-sm-6">
+
+
+            <div>
+                <label for="fechaEvento">Fecha</label>
+                <input class="form-control"
+                       type="date"
+                       id="fechaEvento"
+                       name="fechaEvento">
+            </div>
+
+        </div>
+
+        <div class="col-sm-6">
+            <div>
+                <label for="longitud">Longitud</label>
+                <input class="form-control"
+                       id="longitud"
+                       name= "longitud">
+            </div>
+
+        </div>
+        </div>
 
         <div class="row">
             <div>
-                <button>Crear</button>
+                <button >Crear</button>
             </div>
         </div>
     </form>
