@@ -13,27 +13,27 @@ import {
 
 export class CreatePacienteDto{
 
-    @IsNotEmpty()
-    @Matches(/^([a-z ñáéíóú]{2,60})$/i)
+    @IsNotEmpty({message: '// Campo nombres no debe estar vacio //'})
+    @Matches(/^([a-z ñáéíóú]{2,60})$/i,{message: '// Nombres no debe tener números //'})
     nombres:string;
 
-    @IsNotEmpty()
-    @Matches(/^([a-z ñáéíóú]{2,60})$/i)
+    @IsNotEmpty({message: '// Campo apellidos no debe estar vacio //'})
+    @Matches(/^([a-z ñáéíóú]{2,60})$/i,{message: '// Apellidos no debe tener números //'})
     apellidos:string;
 
-    @IsDateString()
-    @IsNotEmpty()
+    @IsDateString({message: '// Fecha de nacimiento no puede pasar de la fecha de hoy //'})
+    @IsNotEmpty({message: '// Campo Fecha de nacimiento no debe estar vacio //'})
     fecha_nacimiento: string;
 
 
-    @IsNotEmpty()
-    @IsInt(
-    )
+    @IsNotEmpty({message: '// Campo hijos no debe estar vacio //'})
+    @IsInt({message: '// Campo hijos acepta solo numeros //'})
+
     @Min(0)
     @Max(15)
     hijos: number;
 
-    @IsNotEmpty()
-    @IsBoolean()
+    @IsNotEmpty({message: '// Campo tiene seguro no debe estar vacio //'})
+    @IsBoolean({message: '// En el campo seguro debe elegir si o no //'})
     tieneSeguro: boolean;
 }

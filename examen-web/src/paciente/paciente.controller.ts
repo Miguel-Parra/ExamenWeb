@@ -95,16 +95,15 @@ export class PacienteController {
         @Res() response,
         @Session() sesion,
         @Query('error') error: string
-
-    ) {
+    ){
 
         if(sesion.rol === 'usuario'){
+
             let mensaje = undefined;
 
             if(error){
-                mensaje = "Datos erroneos";
+                mensaje = error;
             }
-
 
             response.render(
                 'crear-Paciente',{
@@ -147,12 +146,21 @@ export class PacienteController {
         const errores: ValidationError[]=
             await validate(objetoValidacionPaciente) // Me devuelve un arreglo de validacion de errores
 
-        const hayErrores = errores.length>0;
+        let listaErrores= []
+
+        errores.forEach((error)=>{
+            listaErrores.push(error.constraints["matches"])
+            listaErrores.push(error.constraints["isNotEmpty"])
+            listaErrores.push(error.constraints["isDateString"])
+            listaErrores.push(error.constraints["isInt"])
+            listaErrores.push(error.constraints["isBoolean"])
+        })
+        const hayErrores = errores.length > 0;
 
         if(hayErrores){
             console.error(errores)
 
-            const parametrosConsulta = `?error=${errores[0].constraints}`;
+            const parametrosConsulta = `?error=${listaErrores}`;
 
             response.redirect('/paciente/crear-Paciente/' + parametrosConsulta)
         }else{
@@ -197,7 +205,7 @@ export class PacienteController {
             let mensaje = undefined;
 
             if (error) {
-                mensaje = "Datos erroneos";
+                mensaje = error;
             }
 
             const usuarioActualizar = await this._pacienteService
@@ -236,14 +244,24 @@ export class PacienteController {
         paciente.tieneSeguro=Boolean(Number(paciente.tieneSeguro));
         objetoValidacionPaciente.tieneSeguro = paciente.tieneSeguro;
 
-        const errores: ValidationError[] = await validate(objetoValidacionPaciente) // Me devuelve un arreglo de validacion de errores
+        const errores: ValidationError[]=
+            await validate(objetoValidacionPaciente) // Me devuelve un arreglo de validacion de errores
 
+        let listaErrores= []
+
+        errores.forEach((error)=>{
+            listaErrores.push(error.constraints["matches"])
+            listaErrores.push(error.constraints["isNotEmpty"])
+            listaErrores.push(error.constraints["isDateString"])
+            listaErrores.push(error.constraints["isInt"])
+            listaErrores.push(error.constraints["isBoolean"])
+        })
         const hayErrores = errores.length > 0;
 
-        if (hayErrores) {
+        if(hayErrores){
             console.error(errores)
 
-            const parametrosConsulta = `?error=${errores[0].constraints}`;
+            const parametrosConsulta = `?error=${listaErrores}`;
 
             response.redirect('/paciente/actualizar-Paciente/'+idPaciente + parametrosConsulta)
         } else {

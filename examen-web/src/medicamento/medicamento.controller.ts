@@ -97,7 +97,7 @@ export class MedicamentoController {
             let mensaje = undefined;
 
             if (error) {
-                mensaje = "Datos erroneos";
+                mensaje = error;
             }
 
             response.render(
@@ -137,15 +137,24 @@ export class MedicamentoController {
         medicamento.numeroPastillas = Number(medicamento.numeroPastillas)
         objetoValidacionMedicamento.numeroPastillas = medicamento.numeroPastillas
 
-        const errores: ValidationError[] =
-            await validate(objetoValidacionMedicamento);
+        const errores: ValidationError[]=
+            await validate(objetoValidacionMedicamento) // Me devuelve un arreglo de validacion de errores
 
+        let listaErrores= []
+
+        errores.forEach((error)=>{
+            listaErrores.push(error.constraints["matches"])
+            listaErrores.push(error.constraints["isNotEmpty"])
+            listaErrores.push(error.constraints["isDateString"])
+            listaErrores.push(error.constraints["isBoolean"])
+            listaErrores.push(error.constraints["isNumber"])
+        })
         const hayErrores = errores.length > 0;
 
-        if (hayErrores) {
-            console.error(errores);
+        if(hayErrores){
+            console.error(errores)
 
-            const parametrosConsulta = `?error=${errores[0].constraints}`;
+            const parametrosConsulta = `?error=${listaErrores}`;
 
             response.redirect('/medicamento/crear-medicamento/' + idPaciente + parametrosConsulta)
         } else {
@@ -190,7 +199,7 @@ export class MedicamentoController {
             let mensaje = undefined;
 
             if (error) {
-                mensaje = "Datos erroneos";
+                mensaje = error;
             }
 
             const medicamentoActualizar = await this._medicamentoService
@@ -232,15 +241,24 @@ export class MedicamentoController {
         medicamento.numeroPastillas = Number(medicamento.numeroPastillas)
         objetoValidacionMedicamento.numeroPastillas = medicamento.numeroPastillas
 
-        const errores: ValidationError[] =
-            await validate(objetoValidacionMedicamento);
+        const errores: ValidationError[]=
+            await validate(objetoValidacionMedicamento) // Me devuelve un arreglo de validacion de errores
 
+        let listaErrores= []
+
+        errores.forEach((error)=>{
+            listaErrores.push(error.constraints["matches"])
+            listaErrores.push(error.constraints["isNotEmpty"])
+            listaErrores.push(error.constraints["isDateString"])
+            listaErrores.push(error.constraints["isBoolean"])
+            listaErrores.push(error.constraints["isNumber"])
+        })
         const hayErrores = errores.length > 0;
 
-        if (hayErrores) {
-            console.error(errores);
+        if(hayErrores){
+            console.error(errores)
 
-            const parametrosConsulta = `?error=${errores[0].constraints}`;
+            const parametrosConsulta = `?error=${listaErrores}`;
 
             response.redirect('/medicamento/actualizar-medicamento/' + idPaciente +"/"+ idMedicamento +  parametrosConsulta)
 
