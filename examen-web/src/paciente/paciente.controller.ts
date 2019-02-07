@@ -101,7 +101,7 @@ export class PacienteController {
         let mensaje = undefined;
 
         if(error){
-            mensaje = "Datos erroneos";
+            mensaje = "Datos Erroneos";
         }
 
         if(sesion.rol === 'usuario'){
