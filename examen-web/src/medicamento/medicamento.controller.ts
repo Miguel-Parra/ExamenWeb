@@ -23,6 +23,7 @@ export class MedicamentoController {
 
         if(sesion.rol==='usuario') {
             let mensaje = undefined;
+            let clase = undefined;
 
             console.log(busquedaMedicamento);
 
@@ -31,12 +32,15 @@ export class MedicamentoController {
                 switch (accion) {
                     case 'actualizar':
                         mensaje = `Registro ${nombre} actualizado`;
+                        clase = 'alert alert-danger';
                         break;
                     case 'borrar':
                         mensaje = `Registro ${nombre} eliminado`;
+                        clase = 'alert alert-info';
                         break;
                     case 'crear':
                         mensaje = `Registro ${nombre} creado`;
+                        clase = 'alert alert-success';
                         break;
                 }
             }
@@ -71,7 +75,8 @@ export class MedicamentoController {
                 {
                     arregloMedicamentos: medicamentoUsuario,
                     mensaje: mensaje,
-                    idPaciente: idPaciente
+                    idPaciente: idPaciente,
+                    clase:clase
                 }
             )
         }else{

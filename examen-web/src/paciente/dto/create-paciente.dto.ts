@@ -27,7 +27,8 @@ export class CreatePacienteDto{
 
 
     @IsNotEmpty()
-    @IsInt()
+    @IsInt(
+    )
     @Min(0)
     @Max(15)
     hijos: number;
