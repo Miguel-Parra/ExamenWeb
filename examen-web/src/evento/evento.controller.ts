@@ -25,9 +25,7 @@ export class EventoController {
         @Session() sesion
     ) {
 
-        console.log(sesion.rol)
-
-        if (sesion.rol === 'usuario') {
+        if(sesion.rol==='usuario') {
             let mensaje = undefined;
             console.log(sesion)
 
@@ -67,8 +65,9 @@ export class EventoController {
                 arregloEvento: evento,
                 mensaje: mensaje,
             })
-        } else {
-            throw new BadRequestException({mensaje: "No tiene acceso a esta vista"});
+
+        }else{
+            response.redirect('/login')
         }
 
     }
@@ -76,18 +75,24 @@ export class EventoController {
     @Get('crear-evento')
     mostrarCrearEvento(
         @Res() response,
-        @Query('error') error: string
-    ) {
-        let mensaje = undefined;
+		 @Session() sesion,
+		 @Query('error') error: string
+
+       
+    ){
+        if(sesion.rol==='usuario') {
+			let mensaje = undefined;
 
         if (error) {
             mensaje = "Datos erroneos";
         }
-
-        response.render('crear-evento',
-            {
+            response.render('crear-evento',{
                 mensaje: mensaje
             })
+        }else{
+            response.redirect('/login')
+        }
+
     }
 
     @Post('crear-evento')
@@ -144,25 +149,32 @@ export class EventoController {
     async actualizarEvento(
         @Param('idEvento') idEvento: string,
         @Res() response,
-        @Query('error') error: string
+        @Query('error') error: string,
+        @Session() sesion
     ) {
 
-        let mensaje = undefined;
+        if(sesion.rol==='usuario') {
 
+            let mensaje = undefined;
         if (error) {
             mensaje = "Datos erroneos";
         }
 
-        const eventoActualizar = await this._eventoService
-            .buscarPorId(Number(idEvento));
 
-        response.render(
-            'crear-evento', {//ir a la pantalla de crear-usuario
-                evento: eventoActualizar,
-                mensaje: mensaje,
-                idEvento: idEvento
-            }
-        )
+            const eventoActualizar = await this._eventoService
+                .buscarPorId(Number(idEvento));
+
+            response.render(
+                'crear-evento', {//ir a la pantalla de crear-usuario
+                    evento: eventoActualizar,
+                    mensaje: mensaje,
+					 idEvento: idEvento
+                }
+            )
+        }else{
+            response.redirect('/login')
+        }
+
     }
 
     @Post('actualizar-evento/:idEvento')

@@ -61,9 +61,12 @@
                     <a href="/medicamento/actualizar-medicamento/<%=idPaciente%>/<%= medicamentos.id %>">
                         <button class="btn btn-outline-info btn-block espaciado-boton" type="submit">Actualizar</button>
                     </a>
-                    <a href="/evento/asignar-evento/<%=idPaciente%>/<%= medicamentos.id %>">
-                        <button class="btn btn-outline-info btn-block espaciado-boton" type="submit">Actualizar</button>
+
+                    <a href="/evento-por-medicamento/asignar-evento/<%=idPaciente%>/<%= medicamentos.id %>">
+                        <button
+                                class="btn btn-outline-info btn-block espaciado-boton">Observar eventos</button>
                     </a>
+
                 </td>
             </tr>
         <% }) %>

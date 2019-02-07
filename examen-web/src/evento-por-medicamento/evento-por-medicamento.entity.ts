@@ -18,6 +18,6 @@ export class EventoPorMedicamentoEntity{
         type => EventoEntity,
         evento => evento.eventosPorMedicamento
     )
-    evento: MedicamentoEntity
+    evento: EventoEntity
 
 }

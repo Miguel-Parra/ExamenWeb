@@ -1,4 +1,4 @@
-import {BadRequestException, Body, Controller, Get, Param, Post, Query, Res} from "@nestjs/common";
+import {BadRequestException, Body, Controller, Get, Param, Post, Query, Res, Session} from "@nestjs/common";
 import {Medicamento, MedicamentoService} from "./medicamento.service";
 import {FindManyOptions, Like,} from "typeorm";
 import {MedicamentoEntity} from "./medicamento.entity";
@@ -18,59 +18,65 @@ export class MedicamentoController {
         @Query('nombre') nombre: string,
         @Query('busquedaMedicamento') busquedaMedicamento: string,
         @Param('idPaciente') idPaciente: string,
+        @Session() sesion
     ) {
-        let mensaje = undefined;
 
-        console.log(busquedaMedicamento);
+        if(sesion.rol==='usuario') {
+            let mensaje = undefined;
+
+            console.log(busquedaMedicamento);
 
 
-        if (accion && nombre) {
-            switch (accion) {
-                case 'actualizar':
-                    mensaje = `Registro ${nombre} actualizado`;
-                    break;
-                case 'borrar':
-                    mensaje = `Registro ${nombre} eliminado`;
-                    break;
-                case 'crear':
-                    mensaje = `Registro ${nombre} creado`;
-                    break;
+            if (accion && nombre) {
+                switch (accion) {
+                    case 'actualizar':
+                        mensaje = `Registro ${nombre} actualizado`;
+                        break;
+                    case 'borrar':
+                        mensaje = `Registro ${nombre} eliminado`;
+                        break;
+                    case 'crear':
+                        mensaje = `Registro ${nombre} creado`;
+                        break;
+                }
             }
-        }
 
 
-        let medicamentos: MedicamentoEntity[];
+            let medicamentos: MedicamentoEntity[];
 
 
-        let medicamentoUsuario: MedicamentoEntity[];
+            let medicamentoUsuario: MedicamentoEntity[];
 
 
-        if (busquedaMedicamento) {
+            if (busquedaMedicamento) {
 
-            const consulta: FindManyOptions<MedicamentoEntity> = {
-                where: [
-                    {
-                        //paciente: idPaciente,
-                        nombreMedicamento: Like(`%${busquedaMedicamento}%`)
-                    }
+                const consulta: FindManyOptions<MedicamentoEntity> = {
+                    where: [
+                        {
+                            paciente: idPaciente,
+                            nombreMedicamento: Like(`%${busquedaMedicamento}%`)
+                        }
 
-                ]
-            };
-            medicamentoUsuario = await this._medicamentoService.buscar(consulta);
-            console.log(medicamentoUsuario)
-        } else {
+                    ]
+                };
+                medicamentoUsuario = await this._medicamentoService.buscar(consulta);
+                console.log(medicamentoUsuario)
+            } else {
 
-            medicamentoUsuario = await this._medicamentoService.buscarPorIdPaciente(Number(idPaciente));
+                medicamentoUsuario = await this._medicamentoService.buscarPorIdPaciente(Number(idPaciente));
 
-        }
-
-        response.render('lista-medicamentos',
-            {
-                arregloMedicamentos: medicamentoUsuario,
-                mensaje: mensaje,
-                idPaciente: idPaciente
             }
-        )
+
+            response.render('lista-medicamentos',
+                {
+                    arregloMedicamentos: medicamentoUsuario,
+                    mensaje: mensaje,
+                    idPaciente: idPaciente
+                }
+            )
+        }else{
+            response.redirect('/login')
+        }
     }
 
 
@@ -79,21 +85,26 @@ export class MedicamentoController {
     crearMedicamento(
         @Res() response,
         @Param('idPaciente') idPaciente: string,
-        @Query('error') error: string
+        @Query('error') error: string,
+        @Session() sesion
     ) {
-        let mensaje = undefined;
+        if(sesion.rol==='usuario') {
+            let mensaje = undefined;
 
-        if(error){
-            mensaje = "Datos erroneos";
-        }
-
-        response.render(
-            'crear-medicamento',
-            {
-                idPaciente: idPaciente,
-                mensaje: mensaje
+            if (error) {
+                mensaje = "Datos erroneos";
             }
-        )
+
+            response.render(
+                'crear-medicamento',
+                {
+                    idPaciente: idPaciente,
+                    mensaje: mensaje
+                }
+            )
+        }else{
+            response.redirect('/login')
+        }
     }
 
 //CREAR USUARIO Y GUARDAR EN LA BASE DE DATOS
@@ -167,25 +178,30 @@ export class MedicamentoController {
         @Param('idMedicamento') idMedicamento: string,
         @Param('idPaciente') idPaciente: string,
         @Res() response,
-        @Query('error') error: string
+        @Query('error') error: string,
+        @Session() sesion
     ) {
-        let mensaje = undefined;
+        if(sesion.rol==='usuario') {
+            let mensaje = undefined;
 
-        if(error){
-            mensaje = "Datos erroneos";
-        }
-
-        const medicamentoActualizar = await this._medicamentoService
-            .buscarPorId(Number(idMedicamento));
-
-        response.render(
-            'crear-medicamento', {//ir a la pantalla de crear-usuario
-                medicamento: medicamentoActualizar,
-                idPaciente: idPaciente,
-                idMedicamento: idMedicamento,
-                mensaje: mensaje
+            if (error) {
+                mensaje = "Datos erroneos";
             }
-        )
+
+            const medicamentoActualizar = await this._medicamentoService
+                .buscarPorId(Number(idMedicamento));
+
+            response.render(
+                'crear-medicamento', {//ir a la pantalla de crear-usuario
+                    medicamento: medicamentoActualizar,
+                    idPaciente: idPaciente,
+                    idMedicamento: idMedicamento,
+                    mensaje: mensaje
+                }
+            )
+        }else{
+            response.redirect('/login')
+        }
     }
 
     @Post('actualizar-medicamento/:idPaciente/:idMedicamento')
