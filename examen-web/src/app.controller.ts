@@ -28,9 +28,9 @@ export class AppController {
     mostrarLogin(
         @Res() res,
         @Query("mensaje") mensajeObtenido,
-    @Query('error') error: string
+        @Query('error') error: string
     ) {
-		 let mensaje = undefined;
+        let mensaje = undefined;
 
         if(error){
             mensaje = "Datos erroneos";
@@ -95,81 +95,79 @@ export class AppController {
 
                     }
                 } else {
+
+                    res.redirect('/login?mensaje=espere estamos verificando sus datos')
                     //res.send('sin rol')
-                    throw new BadRequestException({mensaje: 'Espere estamos verificando sus datos'})
+                    //throw new BadRequestException({mensaje: 'Espere estamos verificando sus datos'})
+
                 }
-
-            } else {
-
-                res.redirect('/login?mensaje=espere estamos verificando sus datos')
-                //res.send('sin rol')
-                //throw new BadRequestException({mensaje: 'Espere estamos verificando sus datos'})
-
+            }else{
+                res.redirect('/login')
             }
         }
     }
 
     @Get('logout')
     async logout(
-        @Res() res,
-        @Session() sesion,
+            @Res() res,
+            @Session() sesion,
     )
-    {
+        {
 
-        sesion.usuario = undefined;
-        sesion.destroy()
-        res.redirect('login')
-    }
+            sesion.usuario = undefined;
+            sesion.destroy()
+            res.redirect('login')
+        }
 
 
     @Get('eventos')
     async mostrarEventos(
-        @Res() response,
-        @Query('busqueda') busqueda
+            @Res() response,
+            @Query('busqueda') busqueda
     ){
 
-        let evento: EventoEntity[]
+            let evento: EventoEntity[]
 
-        if (busqueda) {
+            if (busqueda) {
 
-            const consulta: FindManyOptions<EventoEntity> = {
-                where: [
-                    {
-                        nombreEvento: Like(`%${busqueda}%`)
-                    },
+                const consulta: FindManyOptions<EventoEntity> = {
+                    where: [
+                        {
+                            nombreEvento: Like(`%${busqueda}%`)
+                        },
 
-                ]
-            };
+                    ]
+                };
 
-            evento = await this._eventoService.buscar(consulta);
-        } else {
+                evento = await this._eventoService.buscar(consulta);
+            } else {
 
-            evento= await this._eventoService.buscar();
+                evento= await this._eventoService.buscar();
+            }
+            response.render('eventos',{
+                arregloEvento:evento,
+
+            })
+
         }
-        response.render('eventos',{
-            arregloEvento:evento,
-
-        })
-
-    }
 
     @Get('ver-participantes/:idEvento')
     async mostrarParticipantes (
-        @Res() response,
-        @Param('idEvento') idEvento,
-        @Query('nombreEvento') nombreEvento
+            @Res() response,
+            @Param('idEvento') idEvento,
+            @Query('nombreEvento') nombreEvento
     ){
-        let eventoPorMedicamento:EventoPorMedicamentoEntity[]
-        let evento: EventoPorMedicamentoEntity
+            let eventoPorMedicamento:EventoPorMedicamentoEntity[]
+            let evento: EventoPorMedicamentoEntity
 
-        eventoPorMedicamento=await this._eventoPorMedicamento.obtenerMedicamento(+idEvento)
-        response.render('lista-participantes',{
-            arregloParticipantes:eventoPorMedicamento,
-            nombreDelEvento: nombreEvento,
-        })
+            eventoPorMedicamento=await this._eventoPorMedicamento.obtenerMedicamento(+idEvento)
+            response.render('lista-participantes',{
+                arregloParticipantes:eventoPorMedicamento,
+                nombreDelEvento: nombreEvento,
+            })
+        }
+
     }
-
-}
 
 
 

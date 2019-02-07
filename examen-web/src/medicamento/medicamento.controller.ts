@@ -53,7 +53,7 @@ export class MedicamentoController {
                 const consulta: FindManyOptions<MedicamentoEntity> = {
                     where: [
                         {
-                            //paciente: idPaciente,
+                            paciente: idPaciente,
                             nombreMedicamento: Like(`%${busquedaMedicamento}%`)
                         }
 

@@ -27,9 +27,6 @@ export class MedicamentoService {
 
     //buscar
     buscar( parametros?: FindManyOptions<MedicamentoEntity>): Promise<MedicamentoEntity[]> {
-
-
-
         return this._medicamentoRepository.find(parametros)
     }
 

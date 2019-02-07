@@ -51,20 +51,18 @@ export class PacienteController {
                 const consulta: FindManyOptions<PacienteEntity> = {
                     where: [
                         {
+                            usuario: sesion.idUsuario,
                             nombres: Like(`%${busqueda}%`)
                         },
                         {
+                            usuario: sesion.idUsuario,
                             apellidos: Like(`%${busqueda}%`)
                         },
                         {
+                            usuario: sesion.idUsuario,
                             fechaNacimiento: Like(`%${busqueda}%`)
                         },
-                        {
-                            hijos: Like(`%${busqueda}%`)
-                        },
-                        {
-                            tieneSeguro: Like(`%${busqueda}%`)
-                        },
+
                     ]
                 };
 
@@ -101,11 +99,11 @@ export class PacienteController {
     ) {
 
         if(sesion.rol === 'usuario'){
-        let mensaje = undefined;
+            let mensaje = undefined;
 
-        if(error){
-            mensaje = "Datos erroneos";
-        }
+            if(error){
+                mensaje = "Datos erroneos";
+            }
 
 
             response.render(
