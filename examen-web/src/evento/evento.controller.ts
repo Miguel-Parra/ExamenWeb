@@ -75,17 +75,18 @@ export class EventoController {
     @Get('crear-evento')
     mostrarCrearEvento(
         @Res() response,
-		 @Session() sesion,
-		 @Query('error') error: string
+        @Session() sesion,
+        @Query('error') error: string
 
-       
+
     ){
         if(sesion.rol==='usuario') {
-			let mensaje = undefined;
+            let mensaje = undefined;
 
-        if (error) {
-            mensaje = "Datos erroneos";
-        }
+            if(error){
+                mensaje = error;
+            }
+
             response.render('crear-evento',{
                 mensaje: mensaje
             })
@@ -109,15 +110,22 @@ export class EventoController {
         const fec = new Date(evento.fechaEvento).toISOString();
         objetoValidacionEvento.fechaEvento = fec
 
-        const errores: ValidationError[] =
-            await validate(objetoValidacionEvento);
+        const errores: ValidationError[]=
+            await validate(objetoValidacionEvento) // Me devuelve un arreglo de validacion de errores
 
+        let listaErrores= []
+
+        errores.forEach((error)=>{
+            listaErrores.push(error.constraints["matches"])
+            listaErrores.push(error.constraints["isNotEmpty"])
+            listaErrores.push(error.constraints["isDateString"])
+        })
         const hayErrores = errores.length > 0;
 
-        if (hayErrores) {
-            console.error(errores);
+        if(hayErrores){
+            console.error(errores)
 
-            const parametrosConsulta = `?error=${errores[0].constraints}`;
+            const parametrosConsulta = `?error=${listaErrores}`;
 
             response.redirect('/evento/crear-evento/' + parametrosConsulta)
         } else {
@@ -156,10 +164,10 @@ export class EventoController {
         if(sesion.rol==='usuario') {
 
             let mensaje = undefined;
-        if (error) {
-            mensaje = "Datos erroneos";
-        }
 
+            if (error) {
+                mensaje = error;
+            }
 
             const eventoActualizar = await this._eventoService
                 .buscarPorId(Number(idEvento));
@@ -168,7 +176,7 @@ export class EventoController {
                 'crear-evento', {//ir a la pantalla de crear-usuario
                     evento: eventoActualizar,
                     mensaje: mensaje,
-					 idEvento: idEvento
+                    idEvento: idEvento
                 }
             )
         }else{
@@ -192,15 +200,22 @@ export class EventoController {
         const fec = new Date(evento.fechaEvento).toISOString();
         objetoValidacionEvento.fechaEvento = fec
 
-        const errores: ValidationError[] =
-            await validate(objetoValidacionEvento);
+        const errores: ValidationError[]=
+            await validate(objetoValidacionEvento) // Me devuelve un arreglo de validacion de errores
 
+        let listaErrores= []
+
+        errores.forEach((error)=>{
+            listaErrores.push(error.constraints["matches"])
+            listaErrores.push(error.constraints["isNotEmpty"])
+            listaErrores.push(error.constraints["isDateString"])
+        })
         const hayErrores = errores.length > 0;
 
-        if (hayErrores) {
-            console.error(errores);
+        if(hayErrores){
+            console.error(errores)
 
-            const parametrosConsulta = `?error=${errores[0].constraints}`;
+            const parametrosConsulta = `?error=${listaErrores}`;
 
             response.redirect('/evento/actualizar-evento/'+ idEvento + parametrosConsulta)
         } else {

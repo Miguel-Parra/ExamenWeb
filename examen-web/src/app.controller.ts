@@ -33,8 +33,9 @@ export class AppController {
         let mensaje = undefined;
 
         if(error){
-            mensaje = "Datos erroneos";
+            mensaje = error;
         }
+
         let mensajeVerificacion=undefined;
         if(mensajeObtenido){
             mensajeVerificacion=mensajeObtenido;
@@ -60,12 +61,19 @@ export class AppController {
         const errores: ValidationError[] =
             await validate(objetoValidacionLogin) // Me devuelve un arreglo de validacion de errores
 
+        let listaErrores= []
+
+        errores.forEach((error)=>{
+            listaErrores.push(error.constraints["matches"])
+
+            listaErrores.push(error.constraints["isNotEmpty"])
+        })
         const hayErrores = errores.length > 0;
 
         if (hayErrores) {
             console.error(errores)
 
-            const parametrosConsulta = `?error=${errores[0].constraints}`;
+            const parametrosConsulta = `?error=${listaErrores}`;
 
             res.redirect('/login/' + parametrosConsulta)
 

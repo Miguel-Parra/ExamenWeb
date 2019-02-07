@@ -106,7 +106,7 @@ export class UsuarioController {
         let mensaje = undefined;
 
         if(error){
-            mensaje = "Datos erroneos";
+            mensaje = error;
         }
 
         res.render('crear-usuario',{
@@ -136,12 +136,19 @@ export class UsuarioController {
         const errores: ValidationError[] =
             await validate(objetoValidacionUsuario) // Me devuelve un arreglo de validacion de errores
 
+        let listaErrores= []
+
+        errores.forEach((error)=>{
+            listaErrores.push(error.constraints["matches"])
+            listaErrores.push(error.constraints["isNotEmpty"])
+            listaErrores.push(error.constraints["isDateString"])
+        })
         const hayErrores = errores.length > 0;
 
         if (hayErrores) {
             console.error(errores)
 
-            const parametrosConsulta = `?error=${errores[0].constraints}`;
+            const parametrosConsulta = `?error=${listaErrores}`;
 
             res.redirect('/usuario/crear-usuario' + parametrosConsulta)
         } else {
