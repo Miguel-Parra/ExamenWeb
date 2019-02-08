@@ -110,7 +110,7 @@ export class AppController {
 
                 }
             }else{
-                res.redirect('/login')
+                res.redirect('/login?mensaje=Usuario no registrado en el sistema')
             }
         }
     }
