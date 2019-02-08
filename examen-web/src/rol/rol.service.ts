@@ -5,7 +5,7 @@ import {RolEntity} from "./rol.entity";
 import {UsuarioEntity} from "../usuario/usuario.entity";
 import {PacienteEntity} from "../paciente/paciente.entity";
 
-Injectable()
+@Injectable()
 
 export class RolService {
 

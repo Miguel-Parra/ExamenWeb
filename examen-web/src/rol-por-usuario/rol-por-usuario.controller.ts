@@ -1,6 +1,5 @@
 import {Controller, Get, Param, Query, Body, Post, Res, Session} from "@nestjs/common";
 import {RolPorUsuario, RolPorUsuarioService} from "./rol-por-usuario.service";
-import {stringify} from "querystring";
 import {RolPorUsuarioEntity} from "./rol-por-usuario.entity";
 import {UsuarioService} from "../usuario/usuario.service";
 import {RolEntity} from "../rol/rol.entity";

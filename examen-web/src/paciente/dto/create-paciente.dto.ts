@@ -28,7 +28,6 @@ export class CreatePacienteDto{
 
     @IsNotEmpty({message: '// Campo hijos no debe estar vacio //'})
     @IsInt({message: '// Campo hijos acepta solo numeros //'})
-
     @Min(0)
     @Max(15)
     hijos: number;
